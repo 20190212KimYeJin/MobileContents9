@@ -98,6 +98,11 @@ public class GunController : MonoBehaviour
 
             isReload = false;
         }
+
+        else
+        {
+            Debug.Log("총알 없음");
+        }
     }
 
 
