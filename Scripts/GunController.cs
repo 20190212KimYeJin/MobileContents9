@@ -10,10 +10,15 @@ public class GunController : MonoBehaviour
     private AudioSource audioSource;
 
     private bool isReload = false; //재장전  하는 동안 발사가 안 되도록, false일 때만 발사
+    private bool isFineSightMode = false; //true면 정조준 상태
+
+    [SerializeField]
+    private Vector3 originPos; //원래 포지션 값
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        //originPos = transform.localPosition;
     }
 
 
@@ -23,6 +28,7 @@ public class GunController : MonoBehaviour
         GunFireRateCalc();
         TryFire();
         TryReload(); //R키 눌러 재장전
+        TryFineSight();
     }
 
     private void GunFireRateCalc()
@@ -61,6 +67,11 @@ public class GunController : MonoBehaviour
         currentFireRate = currentGun.fireRate; //0.2초가 되면서 발사를 하지 못하게 함
         PlaySound(currentGun.fire_Sound);
         currentGun.muzzleFlash.Play();
+
+        //총기 반동 코루틴
+        StopAllCoroutines(); //while문 간 충돌 막기 위함
+        StartCoroutine(RetroActionCoroutine());
+
         //Debug.Log("발사");
     }
 
@@ -105,7 +116,94 @@ public class GunController : MonoBehaviour
         }
     }
 
+    private void TryFineSight()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            FineSight();
+        }
+    }
 
+    private void FineSight()
+    {
+        isFineSightMode = !isFineSightMode; //!isFineSightMode : true false 매번 실행될 때마다 스위치 되도록
+        currentGun.animator.SetBool("FineSightMode", isFineSightMode);
+
+        if (isFineSightMode)
+        {
+            StopAllCoroutines(); //기존 시행 중인 코루틴을 멈춰 중복 시행 막음
+            StartCoroutine(FineSightAvtivateCoroutine());
+        }
+
+        else
+        {
+            StartCoroutine(FineSightDeavtivateCoroutine());
+        }
+    }
+
+
+    //정조준 상태 모드
+    IEnumerator FineSightAvtivateCoroutine()
+    {
+        while(currentGun.transform.localPosition != currentGun.fineSightOriginPos)//정조준 모드가 될 때까지
+        {
+            //자식 개체일 때 사용하는 localPosition
+            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.2f); //현재 위치에서 목적지까지 반복, 화면 가운데로 오게 하는 러프 실행
+            yield return null;//1프레임씩 대기
+        }
+    }
+
+    IEnumerator FineSightDeavtivateCoroutine()
+    {
+        while (currentGun.transform.localPosition != originPos)
+        {
+            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.2f); //원래대로 돌아갈 때까지 계속 러프
+            yield return null;//1프레임씩 대기
+        }
+    }
+
+    IEnumerator RetroActionCoroutine()
+    {
+        Vector3 recoilBack = new Vector3(currentGun.retroActionForce, originPos.y, originPos.z); //총이 꺾여있으므로 z축이 좌우, x축이 앞뒤 + 가까이 붙으면 마이너스값
+        Vector3 retroActionRecoilBack = new Vector3(currentGun.retroActionFineSightForce, currentGun.fineSightOriginPos.y, currentGun.fineSightOriginPos.z);
+
+        if (!isFineSightMode) //정조준 상태 아닌 경우
+        {
+            currentGun.transform.localPosition = originPos; // 반동을 느끼기 위해 처음 위치로 되돌림
+
+            //반동
+            while(currentGun.transform.localPosition.x <= currentGun.retroActionForce - 0.02f) //lerp가 정확하지 않기 때문에 대충 일치하면 반동이 끝나도록
+            {
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, recoilBack, 0.4f); //자기위치, 로컬포지션, 최대 반동(빨리 이뤄지기 위해 0.4 속도)
+                yield return null; // 한 프레임마다 반복
+            }
+
+            //원위치
+            while(currentGun.transform.localPosition != originPos)
+            {
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.1f);
+                yield return null;
+            }
+        }
+
+        else
+        {
+            currentGun.transform.localPosition = currentGun.fineSightOriginPos; //정조준 상태로 위치 되돌림
+
+            while (currentGun.transform.localPosition.x <= currentGun.retroActionFineSightForce - 0.02f) //lerp가 정확하지 않기 때문에 대충 일치하면 반동이 끝나도록
+            {
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, retroActionRecoilBack, 0.4f); //자기위치, 로컬포지션, 최대 반동(빨리 이뤄지기 위해 0.4 속도)
+                yield return null; // 한 프레임마다 반복
+            }
+
+            //원위치
+            while (currentGun.transform.localPosition != currentGun.fineSightOriginPos)
+            {
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.1f);
+                yield return null;
+            }
+        }
+    }
 
     private void PlaySound(AudioClip _clip)
     {

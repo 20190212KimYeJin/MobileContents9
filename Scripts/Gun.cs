@@ -20,7 +20,7 @@ public class Gun : MonoBehaviour
     public float retroActionForce; //반동 세기
     public float retroActionFineSightForce; //정조준시 반동 세기
 
-    public Vector3 findSightOriginPos;
+    public Vector3 fineSightOriginPos;
     public Animator animator;
     public ParticleSystem muzzleFlash; //총구 섬광
     public AudioClip fire_Sound;
