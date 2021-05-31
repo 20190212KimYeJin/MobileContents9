@@ -157,7 +157,7 @@ public class GunController : MonoBehaviour
     {
         while (currentGun.transform.localPosition != originPos)
         {
-            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.2f); //원래대로 돌아갈 때까지 계속 러프
+            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.02f); //원래대로 돌아갈 때까지 계속 러프
             yield return null;//1프레임씩 대기
         }
     }
