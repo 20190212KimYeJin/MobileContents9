@@ -22,6 +22,7 @@ public class GunController : MonoBehaviour
     {
         GunFireRateCalc();
         TryFire();
+        TryReload(); //R키 눌러 재장전
     }
 
     private void GunFireRateCalc()
@@ -61,6 +62,14 @@ public class GunController : MonoBehaviour
         PlaySound(currentGun.fire_Sound);
         currentGun.muzzleFlash.Play();
         //Debug.Log("발사");
+    }
+
+    private void TryReload()
+    {
+        if(Input.GetKeyDown(KeyCode.R) && !isReload && currentGun.currentBulletCount < currentGun.reloadBulletCount) //재장전 개수보다 작을때
+        {
+            StartCoroutine(ReloadCoroutine());
+        }
     }
 
     IEnumerator ReloadCoroutine() //대기가 있어야 함
