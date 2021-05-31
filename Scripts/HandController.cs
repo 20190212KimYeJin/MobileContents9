@@ -14,7 +14,6 @@ public class HandController : MonoBehaviour
 
     private RaycastHit hitinfo; //레이저에 닿은 정보를 얻어올 수 있음
 
-
     // Update is called once per frame
     void Update()
     {
@@ -70,8 +69,11 @@ public class HandController : MonoBehaviour
 
     private bool CheckObject()
     {
-        if(Physics.Raycast(transform.position, transform.forward, out hitinfo, currentHand.range)){
+        if(Physics.Raycast(transform.position, transform.forward, out hitinfo, currentHand.range))
+        {
             return true;
+            Debug.DrawRay(transform.position, transform.forward * hitinfo.distance, Color.red);
+
         }
         return false;
     }
