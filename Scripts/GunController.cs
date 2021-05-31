@@ -9,7 +9,7 @@ public class GunController : MonoBehaviour
     private float currentFireRate; //gun.cs에 있는 연사속도
     private AudioSource audioSource;
 
-    private bool isReload = false; //재장전  하는 동안 발사가 안 되도록, false일 때만 발사
+    private bool isReload = false; //재장전 하는 동안 발사가 안 되도록, false일 때만 발사
     private bool isFineSightMode = false; //true면 정조준 상태
 
     [SerializeField]
@@ -39,7 +39,7 @@ public class GunController : MonoBehaviour
 
     private void TryFire()
     {
-        if(Input.GetKeyDown(KeyCode.X) && currentFireRate <= 0 && !isReload)
+        if(Input.GetKey(KeyCode.X) && currentFireRate <= 0 && !isReload)
         {
             Fire();
         }
@@ -63,7 +63,7 @@ public class GunController : MonoBehaviour
 
     private void Shoot() //발사하는 과정
     {
-        currentGun.currentBulletCount--;
+        currentGun.currentBulletCount--; //현재 총알 하나씩 줄어듦
         currentFireRate = currentGun.fireRate; //0.2초가 되면서 발사를 하지 못하게 함
         PlaySound(currentGun.fire_Sound);
         currentGun.muzzleFlash.Play();
@@ -79,6 +79,7 @@ public class GunController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.R) && !isReload && currentGun.currentBulletCount < currentGun.reloadBulletCount) //재장전 개수보다 작을때
         {
+            CancleFineSight();
             StartCoroutine(ReloadCoroutine());
         }
     }
@@ -118,10 +119,16 @@ public class GunController : MonoBehaviour
 
     private void TryFineSight()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && !isReload)
         {
             FineSight();
         }
+    }
+
+    public void CancleFineSight()
+    {
+        if (isFineSightMode)
+            FineSight();
     }
 
     private void FineSight()
@@ -137,6 +144,7 @@ public class GunController : MonoBehaviour
 
         else
         {
+            StopAllCoroutines();
             StartCoroutine(FineSightDeavtivateCoroutine());
         }
     }
@@ -157,7 +165,7 @@ public class GunController : MonoBehaviour
     {
         while (currentGun.transform.localPosition != originPos)
         {
-            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.02f); //원래대로 돌아갈 때까지 계속 러프
+            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.4f); //원래대로 돌아갈 때까지 계속 러프
             yield return null;//1프레임씩 대기
         }
     }
@@ -172,9 +180,9 @@ public class GunController : MonoBehaviour
             currentGun.transform.localPosition = originPos; // 반동을 느끼기 위해 처음 위치로 되돌림
 
             //반동
-            while(currentGun.transform.localPosition.x <= currentGun.retroActionForce - 0.02f) //lerp가 정확하지 않기 때문에 대충 일치하면 반동이 끝나도록
+            while(currentGun.transform.localPosition.x <= currentGun.retroActionForce  - 0.51f) //lerp가 정확하지 않기 때문에 대충 일치하면 반동이 끝나도록
             {
-                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, recoilBack, 0.4f); //자기위치, 로컬포지션, 최대 반동(빨리 이뤄지기 위해 0.4 속도)
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, recoilBack, 0.1f); //자기위치, 로컬포지션, 최대 반동(빨리 이뤄지기 위해 0.4 속도)
                 yield return null; // 한 프레임마다 반복
             }
 
@@ -190,9 +198,9 @@ public class GunController : MonoBehaviour
         {
             currentGun.transform.localPosition = currentGun.fineSightOriginPos; //정조준 상태로 위치 되돌림
 
-            while (currentGun.transform.localPosition.x <= currentGun.retroActionFineSightForce - 0.02f) //lerp가 정확하지 않기 때문에 대충 일치하면 반동이 끝나도록
+            while (currentGun.transform.localPosition.x <= currentGun.retroActionFineSightForce - 0.01f) //lerp가 정확하지 않기 때문에 대충 일치하면 반동이 끝나도록
             {
-                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, retroActionRecoilBack, 0.4f); //자기위치, 로컬포지션, 최대 반동(빨리 이뤄지기 위해 0.4 속도)
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, retroActionRecoilBack, 0.1f); //자기위치, 로컬포지션, 최대 반동(빨리 이뤄지기 위해 0.4 속도)
                 yield return null; // 한 프레임마다 반복
             }
 
