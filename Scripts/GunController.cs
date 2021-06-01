@@ -35,7 +35,8 @@ public class GunController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         //originPos = transform.localPosition;
 
-
+        WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentGun.animator;
     }
 
 

@@ -141,6 +141,82 @@ public class StatusController : MonoBehaviour
         images_Gauge[SATISFY].fillAmount = (float)currentSatisfy / satisfy;
     }
 
+    public void IncreaseHP(int _count) // 체력 회복
+    {
+        if (currentHp + _count < hp)
+            currentHp += _count;
+
+        else
+            currentHp = hp;
+    }
+
+    public void DecreaseHP(int _count) // 아이템 잘못 먹거나 체력 닮
+    {
+        if(currentDp > 0) //체력을 깎으려는데 방어력이 있는 경우
+        {
+            DecreaseDP(_count);
+            return;
+        }
+
+        currentHp -= _count;
+
+            if (currentHp <= 0)
+            Debug.Log("hp = 0");
+    }
+
+    public void IncreaseDP(int _count) // 방어력
+    {
+        if (currentDp + _count < dp)
+            currentDp += _count;
+
+        else
+            currentDp = dp;
+    }
+
+    public void DecreaseDP(int _count) // 방어력 닮
+    {
+        currentDp -= _count;
+
+            if (currentDp <= 0)
+            Debug.Log("dp = 0");
+    }
+
+    public void IncreaseHungry(int _count) // 배고픔
+    {
+        if (currentHungry + _count < hungry)
+            currentHungry += _count;
+
+        else
+            currentHungry = hungry;
+    }
+
+    public void DecreaseHungry(int _count) // 음식 잘못 먹은 경우 || 배고픔 닮
+    {
+        if (currentHungry - _count < 0)
+            currentHungry = 0;
+        else
+            currentHungry -= _count;
+
+    }
+
+    public void IncreaseThirsty(int _count) // 배고픔
+    {
+        if (currentThirsty + _count < thirsty)
+            currentThirsty += _count;
+
+        else
+            currentThirsty = hungry;
+    }
+
+    public void DecreaseThirsty(int _count) // 목마름
+    {
+        if (currentThirsty - _count < 0)
+            currentThirsty = 0;
+        else
+            currentThirsty -= _count;
+
+    }
+
     public void DecreaseStamina(int _count)
     {
         spUsed = true;
@@ -150,6 +226,11 @@ public class StatusController : MonoBehaviour
             currentSp -= _count;
         else
             currentSp = 0;
+    }
+
+    public int GetCurrentSP()
+    {
+        return currentSp; //sp가 0이면 못움직이게
     }
 }
 

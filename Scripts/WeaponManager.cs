@@ -8,6 +8,12 @@ public class WeaponManager : MonoBehaviour
     //static : 공유 자원
     //중복 교체 방지
 
+    public static Transform currentWeapon; //현재 무기
+    public static Animator currentWeaponAnim; //현재 무기 애니메이션
+
+    [SerializeField]
+    private string currentWeaponType; //현재 무기 타입
+
     [SerializeField] //무기 교체 딜레이
     private float changeWeaponDelayTime;
 
@@ -44,12 +50,6 @@ public class WeaponManager : MonoBehaviour
     [SerializeField]
     private PickaxeController thePickaxeController;
 
-
-    [SerializeField]
-    private string currentWeaponType; //현재 무기 타입
-
-    public static Transform currentWeapon; //현재 무기
-    public static Animator currentWeaponAnim; //현재 무기 애니메이션
 
     // Start is called before the first frame update
     void Start()

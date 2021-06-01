@@ -13,6 +13,11 @@ public class PlayerMove : MonoBehaviour
 
     private bool jump;
 
+    private bool isWalk = false;
+    private bool isRun = false;
+
+    private Vector3 lastPos; // 움직임 체크, 전 프레임의 위치를 기록 및 비교
+
     [SerializeField]
     private StatusController theStatusController;
 
@@ -26,6 +31,12 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Move();
+        MoveCheck();
+    }
+
+    private void Move()
+    {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -38,21 +49,34 @@ public class PlayerMove : MonoBehaviour
         rigidbody.MovePosition(transform.position + transform.forward * v);
         rigidbody.MoveRotation(rigidbody.rotation * angleRot);
 
-        if (Input.GetKeyDown(KeyCode.Space) && this.rigidbody.velocity.y == 0)
+        if (Input.GetKeyDown(KeyCode.Space) && this.rigidbody.velocity.y == 0 && theStatusController.GetCurrentSP() > 0) //점프
         {
             theStatusController.DecreaseStamina(100);
             jump = true;
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            theStatusController.DecreaseStamina(10);
+        if (Input.GetKey(KeyCode.LeftShift) && theStatusController.GetCurrentSP() > 0) //달리기
+        {            
+            theStatusController.DecreaseStamina(2);
             float Rv = Input.GetAxis("Vertical");
             Rv = Rv * runSpeed * Time.deltaTime;
             rigidbody.MovePosition(transform.position + transform.forward * Rv);
             v = v * speed * Time.deltaTime;
         }
 
+    }
+
+    private void MoveCheck()
+    {
+        if (!isRun)
+        {
+            if (Vector3.Distance(lastPos, transform.position) >= 0.01f)//a와 b 사이의 거리 차이를 반환
+                isWalk = true;
+            else
+                isWalk = false;
+
+            lastPos = transform.position;
+        }
     }
 
     void FixedUpdate()
