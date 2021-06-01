@@ -46,7 +46,7 @@ public class PlayerMove : MonoBehaviour
             rigidbody.MovePosition(transform.position + transform.forward * Rv);
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             v = v * speed * Time.deltaTime;
         }

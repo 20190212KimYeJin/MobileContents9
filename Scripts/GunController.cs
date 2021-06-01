@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GunController : MonoBehaviour
-{    
+{
+
+    public static bool isActivate = true; 
+
     [SerializeField]
     private Gun currentGun; //현재 소유한 총
     private float currentFireRate; //gun.cs에 있는 연사속도
@@ -31,16 +34,23 @@ public class GunController : MonoBehaviour
         originPos = Vector3.zero;
         audioSource = GetComponent<AudioSource>();
         //originPos = transform.localPosition;
+
+        WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentGun.animator;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        GunFireRateCalc();
-        TryFire();
-        TryReload(); //R키 눌러 재장전
-        TryFineSight();
+        if (isActivate)
+        {
+            GunFireRateCalc();
+            TryFire();
+            TryReload(); //R키 눌러 재장전
+            TryFineSight();
+        }
+
     }
 
     private void GunFireRateCalc() //재계산 연사속도
@@ -102,6 +112,15 @@ public class GunController : MonoBehaviour
         {
             CancleFineSight();
             StartCoroutine(ReloadCoroutine());
+        }
+    }
+
+    public void CancleReload()
+    {
+        if (isReload)
+        {
+            StopAllCoroutines();
+            isReload = false;
         }
     }
 
@@ -243,5 +262,19 @@ public class GunController : MonoBehaviour
     public Gun GetGun()
     {
         return currentGun;
+    }
+
+    public void GunChange(Gun _gun)
+    {
+        if (WeaponManager.currentWeapon != null)
+            WeaponManager.currentWeapon.gameObject.SetActive(false);
+
+        currentGun = _gun; //현재 무기로 바꿈
+        WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentGun.animator;
+
+        currentGun.transform.localPosition = Vector3.zero; //총의 위치를 정조준 0으로 초기화
+        currentGun.gameObject.SetActive(true);
+        isActivate = true;
     }
 }

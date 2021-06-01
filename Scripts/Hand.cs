@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    public string handName; //손 구분
+    public string handName; //(근접)무기 구분
+
+    // 무기 유형
+    public bool isHand;
+    public bool isAxe;
+    public bool isPickAxe;
+
     public float range; //공격범위
     public int damage; //공격력
     public float workSpeed; //작업속도

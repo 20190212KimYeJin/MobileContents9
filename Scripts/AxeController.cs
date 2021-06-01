@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandController : CloseWeaponController
+public class AxeController : CloseWeaponController
 {
 
     // Update is called once per frame
