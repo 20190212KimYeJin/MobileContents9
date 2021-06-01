@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//근접 무기가 생길 때마다 관리하기 쉽도록 만든 스크립트
+
 public abstract class CloseWeaponController : MonoBehaviour //미완성 클래스
 {
-    public static bool isActivate = false;
-
+    
     //장착된 손 무기
     [SerializeField]
     protected Hand currentHand;
@@ -67,7 +68,8 @@ public abstract class CloseWeaponController : MonoBehaviour //미완성 클래�
         return false;
     }
 
-    public void HandChange(Hand _hand)
+    //가상 함수 : 완성 함수이지만 추가 편집 가능 함수
+    public virtual void HandChange(Hand _hand)
     {
         if (WeaponManager.currentWeapon != null)
             WeaponManager.currentWeapon.gameObject.SetActive(false);
@@ -78,6 +80,5 @@ public abstract class CloseWeaponController : MonoBehaviour //미완성 클래�
 
         currentHand.transform.localPosition = Vector3.zero; //총의 위치를 정조준 0으로 초기화
         currentHand.gameObject.SetActive(true);
-        isActivate = true;
     }
 }

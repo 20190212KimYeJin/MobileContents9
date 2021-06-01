@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class AxeController : CloseWeaponController
 {
+    public static bool isActivate = true;
+
+    void Start()
+    {
+        WeaponManager.currentWeapon = currentHand.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentHand.animator;
+    }
 
     // Update is called once per frame
     void Update()
@@ -25,5 +32,11 @@ public class AxeController : CloseWeaponController
             yield return null;
 
         }
+    }
+
+    public override void HandChange(Hand _hand)
+    {
+        base.HandChange(_hand);
+        isActivate = true;
     }
 }

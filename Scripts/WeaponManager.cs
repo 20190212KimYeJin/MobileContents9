@@ -20,15 +20,22 @@ public class WeaponManager : MonoBehaviour
     [SerializeField]
     private Hand[] hands;
 
+    [SerializeField]
+    private Hand[] axes;
+
     //무기 접근 관리
     private Dictionary<string, Gun> gunDictionary = new Dictionary<string, Gun>();
     private Dictionary<string, Hand> handDictionary = new Dictionary<string, Hand>();
+    private Dictionary<string, Hand> axeDictionary = new Dictionary<string, Hand>();
 
     [SerializeField] //필요 컴포넌트
     private GunController theGunController;
 
     [SerializeField] // "
     private HandController theHandController;
+
+    [SerializeField] 
+    private AxeController theAxeController;
 
     [SerializeField]
     private string currentWeaponType; //현재 무기 타입
@@ -48,7 +55,12 @@ public class WeaponManager : MonoBehaviour
         {
             handDictionary.Add(hands[i].handName, hands[i]);
         }
-        
+
+        for (int i = 0; i < axes.Length; i++)
+        {
+            axeDictionary.Add(axes[i].handName, axes[i]);
+        }
+
     }
 
     // Update is called once per frame
@@ -61,6 +73,9 @@ public class WeaponManager : MonoBehaviour
 
             else if (Input.GetKeyDown(KeyCode.Alpha2)) //맨손 교체
                 StartCoroutine(ChangeWeaponCoroutine("GUN", "SubMachineGun01"));
+
+            else if (Input.GetKeyDown(KeyCode.Alpha3)) //맨손 교체
+                StartCoroutine(ChangeWeaponCoroutine("AXE", "Axe"));
         }
     }
 
@@ -92,6 +107,10 @@ public class WeaponManager : MonoBehaviour
             case "HAND":
                 HandController.isActivate = false;
                 break;
+
+            case "AXE":
+                AxeController.isActivate = false;
+                break;
         }
     }
 
@@ -105,6 +124,11 @@ public class WeaponManager : MonoBehaviour
         if (_type == "HAND")
         {
             theHandController.HandChange(handDictionary[_name]);
+        }
+
+        if (_type == "AXE")
+        {
+            theAxeController.HandChange(axeDictionary[_name]);
         }
     }
 }
