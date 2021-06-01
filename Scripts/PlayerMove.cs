@@ -13,10 +13,14 @@ public class PlayerMove : MonoBehaviour
 
     private bool jump;
 
+    [SerializeField]
+    private StatusController theStatusController;
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         jump = false;
+        theStatusController = FindObjectOfType<StatusController>();
     }
 
     // Update is called once per frame
@@ -36,18 +40,16 @@ public class PlayerMove : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && this.rigidbody.velocity.y == 0)
         {
+            theStatusController.DecreaseStamina(100);
             jump = true;
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
+            theStatusController.DecreaseStamina(10);
             float Rv = Input.GetAxis("Vertical");
             Rv = Rv * runSpeed * Time.deltaTime;
             rigidbody.MovePosition(transform.position + transform.forward * Rv);
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
             v = v * speed * Time.deltaTime;
         }
 
