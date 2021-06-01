@@ -6,12 +6,6 @@ public class HandController : CloseWeaponController
 {
     public static bool isActivate = false;
 
-    void Start()
-    {
-        WeaponManager.currentWeapon = currentHand.GetComponent<Transform>();
-        WeaponManager.currentWeaponAnim = currentHand.animator;
-    }
-
     // Update is called once per frame
     void Update()
     {

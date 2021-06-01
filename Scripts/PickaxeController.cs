@@ -6,6 +6,12 @@ public class PickaxeController : CloseWeaponController
 {
     public static bool isActivate = true;
 
+    void Start()
+    {
+        WeaponManager.currentWeapon = currentHand.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentHand.animator;
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -128,8 +128,8 @@ public class WeaponManager : MonoBehaviour
                 AxeController.isActivate = false;
                 break;
 
-            case "PIXKAXE":
-                AxeController.isActivate = false;
+            case "PICKAXE":
+                PickaxeController.isActivate = false;
                 break;
         }
     }

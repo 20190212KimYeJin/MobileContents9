@@ -6,8 +6,6 @@ public class AxeController : CloseWeaponController
 {
     public static bool isActivate = false;
 
-
-
     // Update is called once per frame
     void Update()
     {
