@@ -43,7 +43,7 @@ public class ActionController : MonoBehaviour
             {
                 Debug.Log(hitInfo.transform.GetComponent<ItemPickup>().item.itemName + " 획득했습니다");
                 Destroy(hitInfo.transform.gameObject);
-                ItemInfoDisappear();
+                InfoDisappear();
 
             }
         }
@@ -59,7 +59,7 @@ public class ActionController : MonoBehaviour
             }
             else
             {
-                ItemInfoDisappear();
+                InfoDisappear();
             }
         }
     }
@@ -71,7 +71,7 @@ public class ActionController : MonoBehaviour
         actionText.text = hitInfo.transform.GetComponent<ItemPickup>().item.itemName + " 획득" + "<color=yellow>" + "(E)" + "</color>";
     }
 
-    private void ItemInfoDisappear()
+    private void InfoDisappear()
     {
         pickupActivated =false;
         actionText.gameObject.SetActive(false); // 텍스트 육안으로 확인 불가

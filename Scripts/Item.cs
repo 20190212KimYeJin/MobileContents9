@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Now Item", menuName = "New Item/item")]
+[CreateAssetMenu(fileName = "New Item", menuName = "New Item/item")]
 public class Item : ScriptableObject //게임 오브젝트에 스크립트를 붙이지 않아도 됨
 {
     public string itemName; //아이템 이름
