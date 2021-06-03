@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems; //마우스 이벤트 담당
 
-public class Slot : MonoBehaviour, IPointerClickHandler
+public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
+    private Vector3 originPos;
 
     public Item item; //획득
     public int itemCount; //획득 아이템 개수
@@ -21,6 +22,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
     void Start()
     {
+        originPos = transform.position;
         theWeaponManager = FindObjectOfType<WeaponManager>();
     }
 
@@ -76,15 +78,15 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     }
 
 
-    public void OnPointerClick(PointerEventData evenData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        if(eventData.button == PointEventData.InputButton.Right) // 스크립트가 적용된 개체에 마우스를 갖다대고 우클릭 하면
+        if(eventData.button == PointerEventData.InputButton.Right) // 스크립트가 적용된 개체에 마우스를 갖다대고 우클릭 하면
         {
             if(item != null)
             {
-                if(item.itemType == item.ItemType.Equipment) //장비 아이템이라면
+                if(item.itemType == Item.ItemType.Equipment) //장비 아이템이라면
                 {
-                    Start.Coroutine(theWeaponManager.ChangeWeapon(item.weaponType, AddItem.itemName));
+                    StartCoroutine(theWeaponManager.ChangeWeaponCoroutine(item.weaponType, item.itemName));
                 }
 
                 else
@@ -96,8 +98,34 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void OnPointerClick(PointerEvenData evenData)
+    
+    public void OnBeginDrag(PointerEventData evenData)
     {
-
+        if(item != null)
+        {
+            transform.position = evenData.position; //슬롯의 위치를 마우스 위치로
+        }
+        
     }
+
+    public void OnDrag(PointerEventData evenData)
+    {
+        if (item != null)
+        {
+            transform.position = evenData.position; //슬롯이 마우스 위치를 따라다님
+        }
+    }
+
+    public void OnEndDrag(PointerEventData evenData)
+    {
+        transform.position = originPos;
+    }
+
+    public void OnDrop(PointerEventData evenData)
+    {
+        
+    }
+
+
+
 }
