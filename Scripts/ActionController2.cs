@@ -22,6 +22,9 @@ public class ActionController2 : MonoBehaviour
     [SerializeField]
     private Text actionText;
 
+    [SerializeField]
+    private Inventory theInventory;
+
     // Update is called once per frame
     void Update()
     {
@@ -45,6 +48,9 @@ public class ActionController2 : MonoBehaviour
             if (hitInfo.transform != null)
             {
                 Debug.Log(hitInfo.transform.GetComponent<ItemPickup>().item.itemName + " 획득했습니다");
+
+                theInventory.AcquireItem(hitInfo.transform.GetComponent<ItemPickup>().item); //아이템 픽업 안의 아이템
+
                 Destroy(hitInfo.transform.gameObject);
                 InfoDisappear();
             }

@@ -27,7 +27,7 @@ public class Slot : MonoBehaviour
     {
         item = _item;
         itemCount = _count;
-        itemImage = sprite = item.ItemImage; // 이미지 형식 변환
+        itemImage.sprite = item.itemImage; // 이미지 형식 변환
 
         if (item.itemType != Item.ItemType.Equipment) //아이템이 장비가 아닌 경우
         {
@@ -37,8 +37,8 @@ public class Slot : MonoBehaviour
 
         else
         {
-            text_Count.text = 0; //0으로 초기화
-            go.CountImage.SetActive(false);            
+            text_Count.text = "0"; //0으로 초기화
+            go_CountImage.SetActive(false);            
         }
 
         SetColor(1); //이미지 컬러 설정
@@ -47,7 +47,7 @@ public class Slot : MonoBehaviour
     public void SetSlotCount(int _count) // 아이템 개수 조정
     {
         itemCount += _count;
-        text_Count.text = itemCount.ToString;
+        text_Count.text = itemCount.ToString();
 
         if(itemCount <= 0) //슬롯초기화
         {
@@ -60,10 +60,10 @@ public class Slot : MonoBehaviour
         item = null;
         itemCount = 0;
         itemImage.sprite = null;
-        SetColor = 0; //투명화
+        SetColor(0); //투명화
 
         go_CountImage.SetActive(false);
-        text_Count.Count.text = "0"; //텍스트 초기화
+        text_Count.text = "0"; //텍스트 초기화
     }
 
 
