@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActionController : MonoBehaviour
+public class ActionController2 : MonoBehaviour
 {
-    [SerializeField]
-    private float range; //습득 사정거리
-
-    private bool pickupActivated = false; //습득 가능할시 true
-
-    private RaycastHit hitInfo; // 충돌체 정보
 
     [SerializeField]
-    private LayerMask layerMask; //아이템에 대한 레이어에 대해 반응하도록 씌운 마스크
+    private float range; // 습득 가능한 최대 거리.
 
+    private bool pickupActivated = false; // 습득 가능할 시 true.
+
+    private RaycastHit hitInfo; // 충돌체 정보 저장.
+
+
+    // 아이템 레이어에만 반응하도록 레이어 마스크를 설정.
     [SerializeField]
-    private Text actionText; //UI 필요
+    private LayerMask layerMask;
 
+    // 필요한 컴포넌트.
+    [SerializeField]
+    private Text actionText;
 
     // Update is called once per frame
     void Update()
@@ -29,23 +32,21 @@ public class ActionController : MonoBehaviour
     private void TryAction()
     {
         if (Input.GetKeyDown(KeyCode.E))
-        {            
+        {
             CheckItem();
             CanPickUp();
         }
     }
 
-
     private void CanPickUp()
     {
-        if (pickupActivated) //true이면
+        if (pickupActivated)
         {
-            if (hitInfo.transform != null) //정보가 있는 경우
+            if (hitInfo.transform != null)
             {
                 Debug.Log(hitInfo.transform.GetComponent<ItemPickup>().item.itemName + " 획득했습니다");
                 Destroy(hitInfo.transform.gameObject);
                 InfoDisappear();
-
             }
         }
     }
@@ -56,27 +57,22 @@ public class ActionController : MonoBehaviour
         {
             if (hitInfo.transform.tag == "Item")
             {
-                ItemInfoAppear(); // 발견하면 텍스트가 나타나는
-            }
-            else
-            {
-                InfoDisappear();
+                ItemInfoAppear();
             }
         }
+        else
+            InfoDisappear();
     }
-
 
     private void ItemInfoAppear()
     {
         pickupActivated = true;
-        actionText.gameObject.SetActive(true); // 텍스트 육안으로 확인 가능
+        actionText.gameObject.SetActive(true);
         actionText.text = hitInfo.transform.GetComponent<ItemPickup>().item.itemName + " 획득 " + "<color=yellow>" + "(E)" + "</color>";
     }
-
     private void InfoDisappear()
     {
         pickupActivated = false;
-        actionText.gameObject.SetActive(false); // 텍스트 육안으로 확인 불가
+        actionText.gameObject.SetActive(false);
     }
-
 }
