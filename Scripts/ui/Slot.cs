@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems; //마우스 이벤트 담당
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour, IPointerClickHandler
 {
 
     public Item item; //획득
@@ -15,6 +16,14 @@ public class Slot : MonoBehaviour
 
     [SerializeField]
     private GameObject go_CountImage;
+
+    private WeaponManager theWeaponManager; //아이템 장착
+
+    void Start()
+    {
+        theWeaponManager = FindObjectOfType<WeaponManager>();
+    }
+
 
     private void SetColor(float _alpha) // 이미지 투명도 조절 : 평소에는 alpha 값이 0이 되도록 설정
     {
@@ -67,16 +76,28 @@ public class Slot : MonoBehaviour
     }
 
 
-
-    // Start is called before the first frame update
-    void Start()
+    public void OnPointerClick(PointerEventData evenData)
     {
-        
+        if(eventData.button == PointEventData.InputButton.Right) // 스크립트가 적용된 개체에 마우스를 갖다대고 우클릭 하면
+        {
+            if(item != null)
+            {
+                if(item.itemType == item.ItemType.Equipment) //장비 아이템이라면
+                {
+                    Start.Coroutine(theWeaponManager.ChangeWeapon(item.weaponType, AddItem.itemName));
+                }
+
+                else
+                {
+                    Debug.Log(item.itemName + "을 사용했습니다.");
+                    SetSlotCount(-1); //아이템 소모                    
+                }
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnPointerClick(PointerEvenData evenData)
     {
-        
+
     }
 }
