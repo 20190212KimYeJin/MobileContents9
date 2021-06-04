@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems; //마우스 이벤트 담당
 
-public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     private Vector3 originPos;
 
@@ -18,12 +18,15 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     [SerializeField]
     private GameObject go_CountImage;
 
-    private WeaponManager theWeaponManager; //아이템 장착
+    private ItemEffectDatabase theItemEffectDatabase;
+    //private WeaponManager theWeaponManager; //아이템 장착 - 아이템이펙트데이터베이스에서 사용
+    //private SlotToolTip theSlotToolType;
 
     void Start()
     {
+        theItemEffectDatabase = FindObjectOfType<ItemEffectDatabase>();
         originPos = transform.position;
-        theWeaponManager = FindObjectOfType<WeaponManager>();
+        //theWeaponManager = FindObjectOfType<WeaponManager>();
     }
 
 
@@ -84,48 +87,54 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         {
             if(item != null)
             {
-                if(item.itemType == Item.ItemType.Equipment) //장비 아이템이라면
-                {
-                    StartCoroutine(theWeaponManager.ChangeWeaponCoroutine(item.weaponType, item.itemName));
-                }
-
-                else
-                {
+                    theItemEffectDatabase.UseItem(item); //아이템 넘겨줌
                     Debug.Log(item.itemName + "을 사용했습니다.");
+
+                if(item.itemType == Item.ItemType.Used) //소모품인 경우
                     SetSlotCount(-1); //아이템 소모                    
-                }
+              
             }
         }
     }
 
     
-    public void OnBeginDrag(PointerEventData evenData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
         if(item != null)
         {
-            transform.position = evenData.position; //슬롯의 위치를 마우스 위치로
+            transform.position = eventData.position; //슬롯의 위치를 마우스 위치로
         }
         
     }
 
-    public void OnDrag(PointerEventData evenData)
+    public void OnDrag(PointerEventData eventData)
     {
         if (item != null)
         {
-            transform.position = evenData.position; //슬롯이 마우스 위치를 따라다님
+            transform.position = eventData.position; //슬롯이 마우스 위치를 따라다님
         }
     }
 
-    public void OnEndDrag(PointerEventData evenData)
+    public void OnEndDrag(PointerEventData eventData)
     {
         transform.position = originPos;
     }
 
-    public void OnDrop(PointerEventData evenData)
+    public void OnDrop(PointerEventData eventData)
     {
         
     }
 
+    public void OnPointerEnter(PointerEventData eventData) //마우스가 슬롯 안에 있으면 활성화
+    {
+        if(item != null)
+            theItemEffectDatabase.ShowTooltip(item);
 
+    }
+
+    public void OnPointerExit(PointerEventData eventData) //마우스가 슬롯을 빠져나가면 발동
+    {
+        theItemEffectDatabase.HideTooltip(item);
+    }
 
 }
