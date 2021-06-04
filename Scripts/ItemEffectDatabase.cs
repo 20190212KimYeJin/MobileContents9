@@ -28,9 +28,9 @@ public class ItemEffectDatabase : MonoBehaviour
 
     private const string HP = "HP", DP = "DP", HUNGRY = "HUNGRY", THIRSTY = "THIRSTY", SATISFY = "SATISFY";
 
-    public void ShowTooltip(Item _item)
+    public void ShowTooltip(Item _item, Vector3 _pos)
     {
-        theSlotToolTip.ShowTooltip(_item); //Slot에서 Itemdatabase로 넘겨주고, 거기서 또 Tooltip으로 넘겨줌
+        theSlotToolTip.ShowTooltip(_item, _pos); //Slot에서 Itemdatabase로 넘겨주고, 거기서 또 Tooltip으로 넘겨줌
     }
 
     public void HideTooltip(Item _item)

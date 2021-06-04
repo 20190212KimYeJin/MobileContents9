@@ -18,9 +18,11 @@ public class SlotTooltip : MonoBehaviour
     [SerializeField]
     private Text Txt_ItemhowToUsed;
 
-    public void ShowTooltip(Item _item) //넘어오는 파라미터로 아이템이 넘어오도록
+    public void ShowTooltip(Item _item, Vector3 _pos) //넘어오는 파라미터로 아이템이 넘어오도록, 툴팁 위치 이동
     {
         go_Base.SetActive(true);
+        _pos += new Vector3(go_Base.GetComponent<RectTransform>().rect.width * 0.5f, -go_Base.GetComponent<RectTransform>().rect.height * 0.5f, 0f); //툴팁 위치를 중앙에서 이동
+        go_Base.transform.position = _pos;
 
         Txt_ItemName.text = _item.itemName; //파라미터에 이름 변경
         Txt_ItemDesc.text = _item.ItemDesc; //설명 변경

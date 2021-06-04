@@ -128,7 +128,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public void OnPointerEnter(PointerEventData eventData) //마우스가 슬롯 안에 있으면 활성화
     {
         if(item != null)
-            theItemEffectDatabase.ShowTooltip(item);
+            theItemEffectDatabase.ShowTooltip(item, transform.position);
 
     }
 
