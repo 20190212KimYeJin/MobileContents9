@@ -31,8 +31,12 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
-        MoveCheck();
+        if (GameManager.canPlayerMove)
+        {
+            Move();
+            MoveCheck();
+        }
+        
     }
 
     private void Move()

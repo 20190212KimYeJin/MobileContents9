@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI; //네비게이션 AI용
 
 public class Animal : MonoBehaviour
 {
@@ -15,10 +16,12 @@ public class Animal : MonoBehaviour
 
     [SerializeField]
     protected float runSpeed;
+    //protected float applySpeed;
 
-    protected float applySpeed;
+    //[SerializeField]
+    //protected float turningSpeed; //회전속도
 
-    protected Vector3 direction; //돼지 방향
+    protected Vector3 destination; //돼지 방향
 
     protected bool isAction; //행동 여부 판별
     protected bool isWalking; //걸음 여부 판별
@@ -36,6 +39,9 @@ public class Animal : MonoBehaviour
 
     protected float currentTime; //대기 시간
 
+    [SerializeField]
+    private float destroyTime; //삭제 시간
+
     //필요 컴포넌트
     [SerializeField]
     protected Animator anim;
@@ -44,6 +50,7 @@ public class Animal : MonoBehaviour
     [SerializeField]
     protected BoxCollider boxCol;
     protected AudioSource theAudio; //pan level custom에서 3d 사운드 조절
+    protected NavMeshAgent nav; //네비게이션
 
     [SerializeField]
     protected AudioClip[] sound_normal;
@@ -57,6 +64,7 @@ public class Animal : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        nav = GetComponent<NavMeshAgent>();
         theAudio = GetComponent<AudioSource>();
         currentTime = waitTime;
         isAction = true; //행동중
@@ -68,7 +76,6 @@ public class Animal : MonoBehaviour
         if (!isDead)
         {
             Move();
-            Rotation();
             ElapseTime(); //시간경과함수 
         }
 
@@ -77,17 +84,8 @@ public class Animal : MonoBehaviour
     protected void Move()
     {
         if (isWalking || isRunning)
-            rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime)); //1초에 walkspeed만큼 나아감
-    }
-
-    protected void Rotation()
-    {
-        if (isWalking || isRunning)
-        {
-            Vector3 _rotation = Vector3.Lerp(transform.eulerAngles, new Vector3(0f, direction.y, 0f), 0.01f);
-            //자기자신 위치(transform.eulerAngles), 목표
-            rigid.MoveRotation(Quaternion.Euler(_rotation)); //벡터3를 쿼터니언으로 만들어 자연스러운 회전값
-        }
+            //rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime)); //1초에 walkspeed만큼 나아감
+            nav.SetDestination(transform.position + destination * 5f); //네비 자체에 방향을 설정함, 5배 정도 더 멀리 도망가도록
     }
 
     protected void ElapseTime()
@@ -107,8 +105,9 @@ public class Animal : MonoBehaviour
         isWalking = false; //무한 걷기 막음
         isRunning = false;
         isAction = true;
-        applySpeed = walkSpeed;
-        direction.Set(0f, Random.Range(0f, 360f), 0f); // y값 자유 회전
+        nav.speed = walkSpeed;
+        nav.ResetPath(); //목적지를 없애 경사 있는 언덕 사이로 들어가지 못하게 함
+        destination.Set(Random.Range(-0.2f, 0.2f), 0f, Random.Range(0.5f, 1f));
 
         anim.SetBool("Walking", isWalking);
         anim.SetBool("Running", isRunning);
@@ -122,7 +121,7 @@ public class Animal : MonoBehaviour
         isWalking = true;
         anim.SetBool("Walking", isWalking);
         currentTime = walkTime;
-        applySpeed = walkSpeed;
+        nav.speed = walkSpeed;
         Debug.Log("걷기");
     }
 
@@ -152,6 +151,7 @@ public class Animal : MonoBehaviour
         isRunning = false;
         isDead = true;
         anim.SetTrigger("Dead");
+        Destroy(this.gameObject, destroyTime); // 죽으면 삭제
     }
 
     protected void RandomSound()

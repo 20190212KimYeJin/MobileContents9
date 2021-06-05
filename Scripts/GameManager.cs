@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static bool canPlayerMove = true; // 플레이어의 움직임 제어
 
-    public static bool isOpenIventory = false; // 인벤토리 활성화
+    public static bool isOpenInventory = false; // 인벤토리 활성화
     public static bool isOpenCraftManual = false; // 건축 메뉴창 활성화
 
     void Start()
@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isOpenIventory || isOpenCraftManual)
+        if (isOpenInventory || isOpenCraftManual)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
