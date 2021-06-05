@@ -18,6 +18,9 @@ public abstract class CloseWeaponController : MonoBehaviour //미완성 클래�
 
     protected RaycastHit hitinfo; //레이저에 닿은 정보를 얻어올 수 있음
 
+    [SerializeField]
+    protected LayerMask layerMask; //곡괭이질 하면 플레이어가 출력되는 버그 수정용
+
 
     protected void TryAttack()
     {
@@ -59,7 +62,7 @@ public abstract class CloseWeaponController : MonoBehaviour //미완성 클래�
 
     protected bool CheckObject()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hitinfo, currentHand.range))
+        if (Physics.Raycast(transform.position, transform.forward, out hitinfo, currentHand.range, layerMask))
         {
             return true;
             //Debug.DrawRay(transform.position, transform.forward * hitinfo.distance, Color.red);

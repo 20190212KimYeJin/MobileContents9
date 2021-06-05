@@ -167,7 +167,7 @@ public class Pig : MonoBehaviour
         Debug.Log("걷기");
     }
 
-    private void Run(Vector3 _targetPos) //플레이어 반대방향으로 뛰도록
+    public void Run(Vector3 _targetPos) //플레이어 반대방향으로 뛰도록
     {
         direction = Quaternion.LookRotation(transform.position - _targetPos).eulerAngles; //반대방향을 바라보도록, xz값은 설정되지 않게 해야함
         currentTime = runTime;

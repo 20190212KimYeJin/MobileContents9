@@ -27,6 +27,9 @@ public class GunController : MonoBehaviour
     [SerializeField]
     private GameObject HitEffect_Prefab;
 
+    [SerializeField]
+    private LayerMask layerMask;
+
 
 
     void Start()
@@ -98,7 +101,7 @@ public class GunController : MonoBehaviour
 
     private void Hit()
     {
-        if(Physics.Raycast(theCam.transform.position, theCam.transform.forward, out hitinfo, currentGun.range))
+        if(Physics.Raycast(theCam.transform.position, theCam.transform.forward, out hitinfo, currentGun.range, layerMask))
         {
             var clone = Instantiate(HitEffect_Prefab, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
             //hitinfo.normal : 충돌 객체의 표면 반환
