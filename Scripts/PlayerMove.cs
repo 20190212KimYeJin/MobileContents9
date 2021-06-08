@@ -21,6 +21,9 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private StatusController theStatusController;
 
+    [SerializeField]
+    private Camera theCamera;
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -69,6 +72,7 @@ public class PlayerMove : MonoBehaviour
         }
 
     }
+
 
     private void MoveCheck()
     {
