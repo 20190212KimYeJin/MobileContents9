@@ -11,10 +11,17 @@ public class GameManager : MonoBehaviour
 
     public static bool isPause = false; //메뉴 호출되면 트루
 
+    public static bool isNight = false;
+    public static bool isWater = false;
+
+    private WeaponManager theWM;
+    private bool flag = false;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        theWM = FindObjectOfType<WeaponManager>();
     }
 
     // Update is called once per frame
@@ -28,7 +35,29 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             canPlayerMove = true;
         }
+
+        if (isWater)
+        {
+            if (!flag)
+            {
+                StopAllCoroutines();
+                StartCoroutine(theWM.WeaponInCoroutine());
+                flag = true;
+            }
+        }
+
+        else
+        {
+            if (flag)
+            {
+                flag = false;
+                theWM.WeaponOut();
+            }
+        }
+           
     }
 }

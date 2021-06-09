@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float runSpeed;
     [SerializeField]
-    private float crouchSpeed;
+    private float rotSpeed;
     [SerializeField]
     private float swimSpeed;
     [SerializeField]
@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private float jumpForce;
+
+    [SerializeField]
+    private StatusController theStatusController;
 
     // 상태 변수
     private bool isRun = false;
@@ -53,6 +56,7 @@ public class PlayerController : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         myRigid = GetComponent<Rigidbody>();
         applySpeed = walkSpeed;
+        theStatusController = FindObjectOfType<StatusController>();
     }
 
 
@@ -61,7 +65,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isActivated && GameManager.canPlayerMove)
         {
-            //WaterCheck();
+            WaterCheck();
             IsGround();
             TryJump();
             TryRun();
@@ -69,17 +73,16 @@ public class PlayerController : MonoBehaviour
             CameraRotation();
             CharacterRotation();
 
-            /*
             if (!GameManager.isWater)
             {
                 TryRun();
             }
-            */
+           
         }
 
     }
 
-    /*
+    
     private void WaterCheck()
     {
         if (GameManager.isWater)
@@ -90,7 +93,7 @@ public class PlayerController : MonoBehaviour
                 applySpeed = swimSpeed;
         }
     }
-    */
+    
 
     // 지면 체크.
     private void IsGround()
@@ -100,15 +103,20 @@ public class PlayerController : MonoBehaviour
 
     private void TryJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGround )//&& !GameManager.isWater)
+        if (Input.GetKeyDown(KeyCode.Space) && isGround && !GameManager.isWater && theStatusController.GetCurrentSP() > 0)
             Jump();
-        else if (Input.GetKeyDown(KeyCode.Space)) // && GameManager.isWater)
+        else if (Input.GetKeyDown(KeyCode.Space) && GameManager.isWater)
             UpSwim();
+
+    
+        theStatusController.GetCurrentSP();
     }
+     
 
     private void Jump()
     {
         myRigid.velocity = transform.up * jumpForce;
+        theStatusController.DecreaseStamina(100);
     }
 
     // 달리기 시도
@@ -149,18 +157,27 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
 
-        float _moveDirX = Input.GetAxisRaw("Horizontal"); // 왼쪽 방향키를 누르면 -1, 오른쪽 방향키를 누르면 1, 안 누르면 0이 리턴됨.
-        float _moveDirZ = Input.GetAxisRaw("Vertical");
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
 
-        Vector3 _moveHorizontal = transform.right * _moveDirX;
-        Vector3 _moveVertical = transform.forward * _moveDirZ;
-        // 오른쪽, 왼쪽, 위, 아래를 구현.
+        h = h * rotSpeed * Time.deltaTime;
+        v = v * walkSpeed * Time.deltaTime;
 
-        Vector3 _velocity = (_moveHorizontal + _moveVertical).normalized * walkSpeed;
-        // normalized는 1초에 얼마나 이동시킬 건지 계산이 편해짐.
+        Vector3 rotation = Vector3.up * h;
+        Quaternion angleRot = Quaternion.Euler(rotation);
 
-        myRigid.MovePosition(transform.position + _velocity * Time.deltaTime);
-        // 타임델타 함수: 한 번 움직일 때 1초 동안 조금씩 움직임.
+        GetComponent<Rigidbody>().MovePosition(transform.position + transform.forward * v);
+        GetComponent<Rigidbody>().MoveRotation(GetComponent<Rigidbody>().rotation * angleRot);
+
+
+        if (Input.GetKey(KeyCode.LeftShift) && theStatusController.GetCurrentSP() > 0) //달리기
+        {
+            theStatusController.DecreaseStamina(2);
+            float Rv = Input.GetAxis("Vertical");
+            Rv = Rv * runSpeed * Time.deltaTime;
+            GetComponent<Rigidbody>().MovePosition(transform.position + transform.forward * Rv);
+            v = v * walkSpeed * Time.deltaTime;
+        }
     }
 
 

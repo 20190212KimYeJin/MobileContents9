@@ -27,8 +27,12 @@ public class PickaxeController : CloseWeaponController
             {
                 if (hitinfo.transform.tag == "Rock")
                 {
-                    hitinfo.transform.GetComponent<Rock>().Mining();
+                    hitinfo.transform.GetComponent<Rock>().Mining();                    
                 }
+
+                else if (hitinfo.transform.tag == "RealRock")
+                    hitinfo.transform.GetComponent<RealRock>().Mining();
+                
 
                 else if (hitinfo.transform.tag == "WeekAnimal")
                     hitinfo.transform.GetComponent<WeekAnimal>().Damage(1, transform.position); //상속

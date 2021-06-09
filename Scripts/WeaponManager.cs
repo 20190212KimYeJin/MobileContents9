@@ -156,4 +156,21 @@ public class WeaponManager : MonoBehaviour
             thePickaxeController.HandChange(pickaxeDictionary[_name]);
         }
     }
+
+    public IEnumerator WeaponInCoroutine()
+    {
+        isChangeWeapon = true;
+        currentWeaponAnim.SetTrigger("Weapon_Out");
+
+        yield return new WaitForSeconds(changeWeaponDelayTime);
+
+        currentWeapon.gameObject.SetActive(false);
+    }
+
+    public void WeaponOut()
+    {
+        isChangeWeapon = true;
+
+        currentWeapon.gameObject.SetActive(false);
+    }
 }

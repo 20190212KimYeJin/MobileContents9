@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HandController : CloseWeaponController
 {
+    
     public static bool isActivate = false;
 
     // Update is called once per frame
@@ -33,4 +34,5 @@ public class HandController : CloseWeaponController
         base.HandChange(_hand);
         isActivate = true;
     }
+ 
 }
