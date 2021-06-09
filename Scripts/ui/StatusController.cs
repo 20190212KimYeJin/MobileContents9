@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StatusController : MonoBehaviour
 {
@@ -109,6 +110,13 @@ public class StatusController : MonoBehaviour
         else // 0이 되었으면
         {
             Debug.Log("배고픔");
+            currentHp--;
+
+            if(currentHp <= 0)
+            {
+                SceneManager.LoadScene(0);
+
+            }
         }
     }
 

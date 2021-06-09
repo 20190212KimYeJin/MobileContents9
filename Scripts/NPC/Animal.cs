@@ -42,6 +42,12 @@ public class Animal : MonoBehaviour
     [SerializeField]
     private float destroyTime; //삭제 시간
 
+    [SerializeField]
+    protected GameObject go_pig; //돼지
+
+    [SerializeField]
+    protected GameObject meat_item; //죽이면 나오는 아이템
+
     //필요 컴포넌트
     [SerializeField]
     protected Animator anim;
@@ -150,8 +156,9 @@ public class Animal : MonoBehaviour
         isWalking = false;
         isRunning = false;
         isDead = true;
-        anim.SetTrigger("Dead");
+        anim.SetTrigger("Dead");        
         Destroy(this.gameObject, destroyTime); // 죽으면 삭제
+        Instantiate(meat_item, go_pig.transform.position, Quaternion.identity);
     }
 
     protected void RandomSound()
