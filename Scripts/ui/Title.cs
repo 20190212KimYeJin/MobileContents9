@@ -8,19 +8,21 @@ public class Title : MonoBehaviour
     [SerializeField]
     private GameObject canvas;
 
+    [SerializeField]
+    private GameObject go_UI;
+
     public string sceneName = "SampleScene";
 
     public static Title instance;
-    //private SaveAndLoad theSaveAndLoad;
+    private SaveNLoad theSaveNLoad; //로드 구현
 
     private void Awake()
-    {
-        
+    {      
 
         if (instance == null)
         {
             instance = this;
-            //DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
         else
             Destroy(this.gameObject);
@@ -34,24 +36,27 @@ public class Title : MonoBehaviour
     public void ClickLoad()
     {
         Debug.Log("로드");
-
-        StartCoroutine(LoadCoroutine());
+        StartCoroutine(LoadCoroutine()); //대기
 
     }
 
     IEnumerator LoadCoroutine()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
-        while(operation.isDone) //로딩이 끝나지 않으면
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName); //클래스에서 맵 전환
+        while(!operation.isDone) //로딩이 끝날 때까지
         {
             yield return null;
         }
 
-        //theSaveAndLoad = FindObjectOfType<SaveAndLoad>(); //다음 씬에 있는 곳에 있는 것을 찾아서
-        //theSaveAndLoad.LoadData(); //로드
-        Destroy(gameObject);
+        theSaveNLoad = FindObjectOfType<SaveNLoad>(); //다음 씬에 있는 곳에 있는 것을 찾아서
+        theSaveNLoad.LoadData(); //로드
 
-        //SceneManager.LoadScene(sceneName); //버그 방지
+        go_UI.SetActive(false);
+
+        /*
+        Destroy(gameObject);
+        SceneManager.LoadScene(sceneName); //버그 방지
+        */
     }
     
 
