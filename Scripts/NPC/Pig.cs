@@ -35,21 +35,21 @@ public class Pig : WeekAnimal //이중 상속
     private void Wait()
     {
         currentTime = waitTime;
-        Debug.Log("대기");
+        //Debug.Log("대기");
     }
 
     private void Eat()
     {
         currentTime = waitTime;
         anim.SetTrigger("Eat");
-        Debug.Log("먹기");
+        //Debug.Log("먹기");
     }
 
     private void Peek()
     {
         currentTime = waitTime;
         anim.SetTrigger("Peek");
-        Debug.Log("두리번");
+        //Debug.Log("두리번");
     }
 
 

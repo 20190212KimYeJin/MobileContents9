@@ -31,6 +31,7 @@ public class Title : MonoBehaviour
     public void ClickStart()
     {
         SceneManager.LoadScene(sceneName);
+        go_UI.SetActive(false);
     }
 
     public void ClickLoad()

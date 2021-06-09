@@ -122,7 +122,7 @@ public class Animal : MonoBehaviour
         anim.SetBool("Walking", isWalking);
         currentTime = walkTime;
         nav.speed = walkSpeed;
-        Debug.Log("걷기");
+        //Debug.Log("걷기");
     }
 
 

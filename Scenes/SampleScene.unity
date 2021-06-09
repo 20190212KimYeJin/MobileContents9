@@ -5033,6 +5033,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   go_InventoryBase: {fileID: 773783387}
   go_SlotParent: {fileID: 1222459949}
+  items:
+  - {fileID: 11400000, guid: 5a31e39fb277b3c45a27fde40c237af0, type: 2}
+  - {fileID: 11400000, guid: ffadff5710295104f8affa02c0c5f120, type: 2}
+  - {fileID: 11400000, guid: b760b65872347714ca5053d5be97d695, type: 2}
+  - {fileID: 11400000, guid: 98933dcbe55af5c49a0413a38315def9, type: 2}
 --- !u!1001 &177148200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42702,7 +42707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4399376854586962, guid: 783807170dc366141aaaeb44eec96c04, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -50.46
+      value: -54.02
       objectReference: {fileID: 0}
     - target: {fileID: 4399376854586962, guid: 783807170dc366141aaaeb44eec96c04, type: 3}
       propertyPath: m_LocalPosition.z

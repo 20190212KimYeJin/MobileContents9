@@ -5,7 +5,7 @@ using UnityEngine;
 public class GunController : MonoBehaviour
 {
 
-    public static bool isActivate = false; 
+    public static bool isActivate = false;
 
     [SerializeField]
     private Gun currentGun; //현재 소유한 총
@@ -64,7 +64,7 @@ public class GunController : MonoBehaviour
 
     private void TryFire()//발사 시도
     {
-        if(Input.GetKey(KeyCode.X) && currentFireRate <= 0 && !isReload)
+        if (Input.GetKey(KeyCode.X) && currentFireRate <= 0 && !isReload)
         {
             Fire();
         }
@@ -81,7 +81,7 @@ public class GunController : MonoBehaviour
             {
                 StartCoroutine(ReloadCoroutine()); //중복 실행 방지
             }
-                
+
         }
 
     }
@@ -101,7 +101,7 @@ public class GunController : MonoBehaviour
 
     private void Hit()
     {
-        if(Physics.Raycast(theCam.transform.position, theCam.transform.forward, out hitinfo, currentGun.range, layerMask))
+        if (Physics.Raycast(theCam.transform.position, theCam.transform.forward, out hitinfo, currentGun.range, layerMask))
         {
             var clone = Instantiate(HitEffect_Prefab, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
             //hitinfo.normal : 충돌 객체의 표면 반환
@@ -111,7 +111,7 @@ public class GunController : MonoBehaviour
 
     private void TryReload() //재장전시도
     {
-        if(Input.GetKeyDown(KeyCode.R) && !isReload && currentGun.currentBulletCount < currentGun.reloadBulletCount) //재장전 개수보다 작을때
+        if (Input.GetKeyDown(KeyCode.R) && !isReload && currentGun.currentBulletCount < currentGun.reloadBulletCount) //재장전 개수보다 작을때
         {
             CancleFineSight();
             StartCoroutine(ReloadCoroutine());
@@ -129,7 +129,7 @@ public class GunController : MonoBehaviour
 
     IEnumerator ReloadCoroutine() //대기가 있어야 함, 재장전
     {
-        if(currentGun.carryBulletCount > 0)
+        if (currentGun.carryBulletCount > 0)
         {
             isReload = true;
             currentGun.animator.SetTrigger("Reload");
@@ -139,7 +139,7 @@ public class GunController : MonoBehaviour
 
             yield return new WaitForSeconds(currentGun.reloadTime); //대기 시간
 
-            if(currentGun.carryBulletCount >= currentGun.reloadBulletCount) //현재 총알 >= 총알 재장전 개수
+            if (currentGun.carryBulletCount >= currentGun.reloadBulletCount) //현재 총알 >= 총알 재장전 개수
             {
                 currentGun.currentBulletCount = currentGun.reloadBulletCount;
                 currentGun.carryBulletCount -= currentGun.reloadBulletCount; //(주의)
@@ -196,7 +196,7 @@ public class GunController : MonoBehaviour
     //정조준 상태 모드 활성화
     IEnumerator FineSightAvtivateCoroutine()
     {
-        while(currentGun.transform.localPosition != currentGun.fineSightOriginPos)//정조준 모드가 될 때까지
+        while (currentGun.transform.localPosition != currentGun.fineSightOriginPos)//정조준 모드가 될 때까지
         {
             //자식 개체일 때 사용하는 localPosition
             currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.2f); //현재 위치에서 목적지까지 반복, 화면 가운데로 오게 하는 러프 실행
@@ -223,14 +223,14 @@ public class GunController : MonoBehaviour
             currentGun.transform.localPosition = originPos; // 반동을 느끼기 위해 처음 위치로 되돌림
 
             //반동
-            while(currentGun.transform.localPosition.x <= currentGun.retroActionForce  - 0.51f) //lerp가 정확하지 않기 때문에 대충 일치하면 반동이 끝나도록
+            while (currentGun.transform.localPosition.x <= currentGun.retroActionForce - 0.51f) //lerp가 정확하지 않기 때문에 대충 일치하면 반동이 끝나도록
             {
                 currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, recoilBack, 0.1f); //자기위치, 로컬포지션, 최대 반동(빨리 이뤄지기 위해 0.4 속도)
                 yield return null; // 한 프레임마다 반복
             }
 
             //원위치
-            while(currentGun.transform.localPosition != originPos)
+            while (currentGun.transform.localPosition != originPos)
             {
                 currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.1f);
                 yield return null;
@@ -280,4 +280,5 @@ public class GunController : MonoBehaviour
         currentGun.gameObject.SetActive(true);
         isActivate = true;
     }
+
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class StatusController : MonoBehaviour
 {
     [SerializeField] //체력
-    private int hp;
+    public int hp;
     private int currentHp;
 
     [SerializeField] //스태미나
@@ -48,7 +48,8 @@ public class StatusController : MonoBehaviour
 
     [SerializeField] //필요 이미지
     private Image[] images_Gauge;
-    private const int HP = 0, DP = 1, SP = 2, HUNGRY = 3, THIRSTY = 4, SATISFY = 5; // 상수화 시킴
+
+    public const int HP = 0, DP = 1, SP = 2, HUNGRY = 3, THIRSTY = 4, SATISFY = 5; // 상수화 시킴
 
 
     void Start() //초기값 설정

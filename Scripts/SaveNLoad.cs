@@ -7,6 +7,11 @@ using System.IO;
 public class SaveData
 {
     public Vector3 playerPos; //플레이어 위치값 기억할 변수
+    public Vector3 playerRot;
+
+    public List<int> invenArrayNumber = new List<int>();
+    public List<string> invenItemName = new List<string>();
+    public List<int> invenItemNumber = new List<int>();
 }
 public class SaveNLoad : MonoBehaviour
 {
@@ -16,6 +21,7 @@ public class SaveNLoad : MonoBehaviour
     private string SAVE_FILENAME = "/SaveFile.txt";
 
     private PlayerController thePlayer;
+    private Inventory theInven;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +36,22 @@ public class SaveNLoad : MonoBehaviour
     public void SaveData()
     {
         thePlayer = FindObjectOfType<PlayerController>();
+        theInven = FindObjectOfType<Inventory>();
+
+        Slot[] slots = theInven.GetSlots();
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if(slots[i] != null)//아이템이 있으면
+            {
+                saveData.invenArrayNumber.Add(i);
+                //saveData.invenItemName.Add(slots[i].item.itemName);
+                saveData.invenItemNumber.Add(slots[i].itemCount);
+            }
+        }
+
         saveData.playerPos = thePlayer.transform.position; //위치 데이터를 기억
+        saveData.playerRot = thePlayer.transform.eulerAngles; //위치 데이터를 기억
         string json = JsonUtility.ToJson(saveData); //위치 값을 제이슨화 시켜
         File.WriteAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME, json); //물리적 파일로 넣음
 
@@ -46,7 +67,15 @@ public class SaveNLoad : MonoBehaviour
             saveData = JsonUtility.FromJson<SaveData>(LoadJson); //세이브 데이터로 풀어줌
 
             thePlayer = FindObjectOfType<PlayerController>();
+            theInven = FindObjectOfType<Inventory>();
+
             thePlayer.transform.position = saveData.playerPos; //위치 순간이동
+            thePlayer.transform.eulerAngles = saveData.playerRot; //회전값 일치
+
+            for (int i = 0; i < saveData.invenItemName.Count; i++)
+            {
+                theInven.LoadToInven(saveData.invenArrayNumber[i], saveData.invenItemName[i], saveData.invenItemNumber[i]);
+            }            
 
             Debug.Log("로드 완료");
         }

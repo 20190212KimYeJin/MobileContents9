@@ -37,6 +37,9 @@ public class PickaxeController : CloseWeaponController
                 else if (hitinfo.transform.tag == "WeekAnimal")
                     hitinfo.transform.GetComponent<WeekAnimal>().Damage(1, transform.position); //상속
 
+                else if (hitinfo.transform.tag == "StrongAnimal")
+                    hitinfo.transform.GetComponent<StrongAnimal>().Damage(1, transform.position); //상속
+
                 isSwing = false; //한번 적중하면 실행되지 않도록
                 Debug.Log(hitinfo.transform.name);
             }

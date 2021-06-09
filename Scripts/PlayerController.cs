@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody myRigid;
 
+    private GameBehavior gameManager;
+
 
     // Use this for initialization
     void Start()
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviour
         myRigid = GetComponent<Rigidbody>();
         applySpeed = walkSpeed;
         theStatusController = FindObjectOfType<StatusController>();
+        gameManager = GameObject.Find("GameManagers").GetComponent<GameBehavior>();
     }
 
 
@@ -200,6 +203,15 @@ public class PlayerController : MonoBehaviour
         // 최솟값은 -45로, 최댓값은 45에 고정되게 한다.
 
         theCamera.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.name == "spider")
+        {
+            gameManager.HP -= 1;
+            Debug.Log("충돌");
+        }
     }
 
 }
