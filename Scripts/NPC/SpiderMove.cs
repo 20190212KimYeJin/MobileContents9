@@ -79,7 +79,7 @@ public class SpiderMove : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "HitEffect(Clone)")
+        if (collision.gameObject.name == "Pickaxe")
         {
             EnemyLives -= 1;
         }

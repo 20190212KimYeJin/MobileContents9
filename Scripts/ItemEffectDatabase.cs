@@ -26,6 +26,12 @@ public class ItemEffectDatabase : MonoBehaviour
     [SerializeField]
     private SlotTooltip theSlotToolTip;
 
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip effect_sound;
+
     private const string HP = "HP", DP = "DP", HUNGRY = "HUNGRY", THIRSTY = "THIRSTY", SATISFY = "SATISFY";
 
     public void ShowTooltip(Item _item, Vector3 _pos)
@@ -72,6 +78,9 @@ public class ItemEffectDatabase : MonoBehaviour
                                 thePlayerStatus.IncreaseHungry(itemEffects[x].num[y]);
                                 break;
                             case SATISFY:
+                                thePlayerStatus.IncreaseSatisfy(itemEffects[x].num[y]);
+                                audioSource.clip = effect_sound;
+                                audioSource.Play();
                                 break; //일치하는 내용 없으면
                             default:
                                 Debug.Log("잘못된 Status 부위. HP, DP, HUNGRY, THIRSTY , SATISFY만 가능합니다");

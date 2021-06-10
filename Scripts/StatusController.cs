@@ -44,8 +44,12 @@ public class StatusController : MonoBehaviour
     private int currentThirstyDecrease;
 
     [SerializeField]
-    private int satisfy; // 만족도
+    private int satisfy = 0; // 만족도
+
+    [SerializeField] //줄어드는 속도
+    private int satisfyDecrease; // 몇 초마다 줄지
     private int currentSatisfy;
+    private int currentSatisfyDecrease;
 
     [SerializeField] //필요 이미지
     private Image[] images_Gauge;
@@ -70,6 +74,8 @@ public class StatusController : MonoBehaviour
         GaugeUpdate();
         SPRechargeTime();
         SPRecover();
+        SatifsyUP();
+        SatifsyClear();
     }
 
     private void SPRechargeTime() //sp 자동 회복
@@ -237,10 +243,55 @@ public class StatusController : MonoBehaviour
             currentSp = 0;
     }
 
+    public void IncreaseSatisfy(int _count)
+    {
+        if (currentSatisfy + _count < satisfy)
+            currentSatisfy += _count;
+
+        else
+            currentSatisfy = satisfy;
+    }
+
     public int GetCurrentSP()
     {
         return currentSp; //sp가 0이면 못움직이게
     }
+
+    private void SatifsyUP()
+    {
+        if (currentSatisfy > 0)
+        {
+            if (currentSatisfyDecrease <= satisfyDecrease)
+                currentSatisfyDecrease++; //1씩 증가
+
+            else
+            {
+                currentSatisfy--; //지금 배고픔은 1씩 감소
+                currentSatisfyDecrease = 0;
+            }
+        }
+
+    }
+
+    IEnumerator NextScene()
+    {
+        yield return new WaitForSeconds(0.4f);
+        Application.LoadLevel("ClearScene");
+    }
+
+    private void SatifsyClear()
+    { 
+        satisfy = 101;
+
+        if (currentSatisfy >= 101)
+        {
+            StartCoroutine(NextScene());
+            //SceneManager.LoadScene(2);
+        }
+        
+    }
+
+    
 }
 
 /*
