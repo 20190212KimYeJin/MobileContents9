@@ -276,7 +276,7 @@ public class StatusController : MonoBehaviour
     IEnumerator NextScene()
     {
         yield return new WaitForSeconds(0.4f);
-        Application.LoadLevel("ClearScene");
+        Application.LoadLevel("ClearScenes");
     }
 
     private void SatifsyClear()

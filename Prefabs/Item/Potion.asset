@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Potion
   m_EditorClassIdentifier: 
   itemName: "\uC11D\uD654 \uBD80\uD65C\uC561"
-  ItemDesc: "\uD074\uB9AC\uC5B4 \uC544\uC774\uD15C"
+  ItemDesc: "\uD074\uB9AC\uC5B4 \uC544\uC774\uD15C\n\uBC18\uB4DC\uC2DC \uD55C \uBC88\uC5D0
+    \uB9C8\uC154\uC57C \uD55C\uB2E4"
   itemType: 1
   itemImage: {fileID: 21300000, guid: a6b4beb5fb7d70e4e9112e47690216c5, type: 3}
   itemPrefab: {fileID: 407195414178133858, guid: b9112714be3a9004ebdc9a7374e3549d,
