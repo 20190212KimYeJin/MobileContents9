@@ -20,6 +20,7 @@ public class Water : MonoBehaviour
     [SerializeField] private Color originNightColor;
     [SerializeField] private float originNightFogDensity;
 
+    [SerializeField] private float breatheTime;
     private float currentBreatheTime;
 
     [SerializeField] private float totalOxygen;
@@ -41,7 +42,7 @@ public class Water : MonoBehaviour
         originFogDensity = RenderSettings.fogDensity;
 
         originDrag = 0;
-        //thePlayerStat = findObjectOfType<StatusController>();
+        thePlayerStat = FindObjectOfType<StatusController>();
         currentOxygen = totalOxygen;
         text_totalOxygen.text = totalOxygen.ToString();
     }
@@ -49,6 +50,15 @@ public class Water : MonoBehaviour
   
     void Update()
     {
+        if (GameManager.isWater)
+        {
+            currentBreatheTime += Time.deltaTime;
+            if (currentBreatheTime >= breatheTime)
+            {
+                currentBreatheTime = 0;
+            }
+        }
+
         DecreaseOxygen();
     }
     

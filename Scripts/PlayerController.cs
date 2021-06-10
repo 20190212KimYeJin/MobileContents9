@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
 
     private void TryJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGround && !GameManager.isWater && theStatusController.GetCurrentSP() > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && isGround && theStatusController.GetCurrentSP() > 0 && !GameManager.isWater )
             Jump();
         else if (Input.GetKeyDown(KeyCode.Space) && GameManager.isWater)
             UpSwim();
