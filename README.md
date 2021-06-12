@@ -16,7 +16,7 @@
 # 스토리 모티브🎮
 ![L_1252094](https://user-images.githubusercontent.com/84370027/121769429-739ef280-cb9e-11eb-8f05-3b97a2095f46.jpg)
 - 스토리 모티브 : Dr.Stone
-- 일본 연재 만화
+- 일본 연재 만화()
 
 # 게임 스토리(시나리오)🎮
 ![12](https://user-images.githubusercontent.com/84370027/120946357-27efe180-c777-11eb-8921-33fdca5acad5.JPG)
@@ -59,6 +59,7 @@ https://github.com/20190212KimYeJin/MobileContents9/tree/master/Scripts
 - 1인칭이므로 Player안에 Main Camera를 넣고 플레이어 시점에서 클리어 할 수 있도록 구현  
 - 게임 플레이 중에는 Player가 자신의 모습을 활용할 수 없어 Capsule로만 몸체 구현  
 - **PlayerController.cs : 움직임 및 시야 조정 등**
+
 ```C#
 public class PlayerController : MonoBehaviour
 {
@@ -982,10 +983,51 @@ public class GunController : MonoBehaviour
 - 충돌체 정보를 받아와 총이 맞은 곳에 이펙트가 터지도록 구현
 - X를 누르면 사운드가 플레이 되도록 설정
 
+- Hud.cs
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI; //필수
+
+public class Hud : MonoBehaviour
+{
+    [SerializeField] //필요 컴포넌트 
+    private GunController theGunController;
+    private Gun currentGun;
+
+    //허드 필요 시 호출
+    [SerializeField]
+    private GameObject go_BulletHud;
+
+    [SerializeField] // 총알 개수 반영 텍스트
+    private Text[] text_Bullet;
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        CheckBullet();
+    }
+
+    private void CheckBullet()
+    {
+        currentGun = theGunController.GetGun();
+        text_Bullet[0].text = currentGun.carryBulletCount.ToString();
+        text_Bullet[1].text = currentGun.reloadBulletCount.ToString();
+        text_Bullet[2].text = currentGun.currentBulletCount.ToString();
+
+    }
+}
+```
+- GunController를 받아와서 현재 총알 개수를 확인할 수 있는 디스플레이(HUD) 구현
+- UI에 총알 개수를 적은 Text를 받아와 전체 총알 개수, 재장전 개수, 현재 총알 개수를 각각 출력(UI 왼쪽부터 순서대로)
+
+
 ## 도끼 구현🪓
 ![13](https://user-images.githubusercontent.com/84370027/120948128-78b60900-c77c-11eb-8267-1e6836913254.JPG)
 - Hand.cs : 무기 구분, 공격 시간과 딜레이 담당 등
-- AxeController.cs : 근접 무기 공격 제어(위의 HandController와 동일)
+- AxeController.cs : 근접 무기 공격 제어(위의 HandController와 문법 동일)
 **cs 이름은 hand로 설정되어 있으나, 근접무기 전체를 통칭함**
 
 ## 곡괭이 구현⛏
@@ -1055,7 +1097,7 @@ public class PickaxeController : CloseWeaponController
 - 한 번 공격이 적중하면 실행되지 않으며, hitinfo의 정보에 담긴 객체의 이름이 Console창에 출력되도록 함
 - 곡괭이의 공격이 맞는 대상은 Collider가 설정되어 있어야 정상적으로 반응함
 
-## 상태 UI
+## 상태 UI🧴
 ![S](https://user-images.githubusercontent.com/84370027/121771870-0a72ab80-cbad-11eb-9d4e-66f8ea0be6e4.JPG)
 - HP, 스태미나, 허기, 갈증, 석화 게이지 구현
 - 허기가 다 닳으면 HP가 점점 깎이고 **HP가 0이 되면 사망**
@@ -1298,13 +1340,13 @@ public class Inventory : MonoBehaviour
 - Collider를 추가하여 플레이어가 뚫고 지나가지 못하도록 설정
 - 입구에는 Collider가 설정된 바위가 막고 있어 게임 최초에는 곡괭이로 부숴야만 숲으로 갈 수 있음
 
-## 마을 외곽(숲)🎮
+## 마을 외곽(숲)🏞
 ![8](https://user-images.githubusercontent.com/84370027/120945713-10aff480-c775-11eb-9de5-cb0e03148adc.JPG)
 나가는 길
 - 돌과 펜스에는 Collider가 붙어있어 그냥 지나갈 수 없다.
 - 돌을 곡괭이로 세 번 내려치면 돌이 깨지고 이후 나갈 수 있다.  
 
-## 사냥 1🐷
+## 사냥🐷
 ![그림3](https://user-images.githubusercontent.com/84370027/121768924-d9d64600-cb9b-11eb-9337-3e4c765dc036.png)
 - 돼지의 눈 앞에 다가가면 반대 방향으로 도망가도록 시야각 구현
 - 돼지를 근접 무기로 두 번 때리면 사망 애니메이션 진행 후 Destroy
@@ -1491,7 +1533,7 @@ public class SpiderMove : MonoBehaviour
 - 순회하다가 거미의 Collider에 Player의 Collider가 충돌하면 Player를 목적지로 하여 돌진하는 것처럼 구현
 
 
-## 물
+## 🌊
 ![wa](https://user-images.githubusercontent.com/84370027/121770477-713f9700-cba4-11eb-95fc-00fba88c2c26.JPG)
 - 움푹 파인 지형을 만들어 물 구현  
 ![ea](https://user-images.githubusercontent.com/84370027/121770479-7270c400-cba4-11eb-9104-6b4230fea47e.JPG)
@@ -1679,8 +1721,9 @@ public class CraftManual : MonoBehaviour
 }
 ```
 - tab 키를 눌러 모닥불을 생성할 수 있는 건축 창을 켜고 끌 수 있음
+- Window(), Window(), CloseWindow() 함수를 통해 활성화 여부를 true, false를 통해 창을 켜고 끌 수 있도록 설정
 - 생성할 프리팹을 public으로 받아와 설정
-- 왼쪽 마우스 버튼을 누르면 설치가 되고, ESC버튼을 누르면 설치를 취소할 수 있음
+- Build(), Cancel() 함수를 통해 왼쪽 마우스 버튼을 누르면 설치가 되고, ESC버튼을 누르면 설치를 취소할 수 있음
 
 ## 클리어 조건 구현🧪
 ![그림13](https://user-images.githubusercontent.com/84370027/121769066-77ca1080-cb9c-11eb-9efa-5eef20af40f3.png)
@@ -1697,26 +1740,294 @@ public class CraftManual : MonoBehaviour
 ![그림12](https://user-images.githubusercontent.com/84370027/121769130-d7282080-cb9c-11eb-8588-89e4815288e9.png)
 - 원활한 게임 플레이를 위해 Q키를 누르면 언제든지 도움말 창을 활성화하고 끌 수 있음
 - Guide.cs : 창 활성화 여부 판단, 창 열고 닫기 관리
+```c#
+public class Guide : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject go_BaseUI;
 
-## 일시정지 메뉴
+    private bool isActivated = false;
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            CallMenu();
+        }
+    }
+
+    private void CallMenu()
+    {
+        if (!isActivated) // isActivated가 false일 경우 윈도우를 오픈.
+            OpenWindow();
+
+        else
+            CloseWindow();
+    }
+
+    private void OpenWindow()
+    {
+        isActivated = true;
+        go_BaseUI.SetActive(true);
+    }
+
+    private void CloseWindow()
+    {
+            isActivated = false;
+            go_BaseUI.SetActive(false);
+    }
+}
+```
+- 만들어 놓은 가이드 창을 go_BaseUI를 받아와 가이드 창을 켜고 끌 수 있음
+- Q키를 눌러 활성화, 비활성화 여부를 판별하게 
+
+## 일시정지 메뉴⏸
 ![ddd](https://user-images.githubusercontent.com/84370027/121770145-8b787580-cba2-11eb-890d-d4b638fb9885.JPG)
 - 플레이 중 P를 누르면 일시정지 메뉴를 언제든지 활성화하고 끌 수 있음
 - Pause.cs : 창 활성화 여부 판단, 창 열고 닫기 관리
+```
+public class PauseMenu : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject go_BaseUI;
 
-## 배경음악
+    [SerializeField]
+    private SaveNLoad theSaveNLoad;
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (!GameManager.isPause)
+                CallMenu();
+            else
+                CloseMenu();
+        }
+    }
+
+    private void CallMenu()
+    {
+        GameManager.isPause = true;
+        go_BaseUI.SetActive(true);
+        Time.timeScale = 0f; //시간 흐름 조절 가능
+    }
+
+    private void CloseMenu()
+    {
+        GameManager.isPause = false;
+        go_BaseUI.SetActive(false);
+        Time.timeScale = 1f; //시간 흐름 조절 가능
+    }
+
+    public void ClickSave()
+    {
+        Debug.Log("저장");
+        theSaveNLoad.SaveData(); //위치 기록
+    }
+
+    public void ClickLoad()
+    {
+        Debug.Log("로드");
+        theSaveNLoad.LoadData();
+    }
+
+    public void ClickExit()
+    {
+        Debug.Log("종료");
+        Application.Quit(); //게임 종료
+    }
+}
+```
+- 
+- SaveAndLoad.cs : 저장, 로드, 종료(후술)
+
+## 배경음악🔊
 ![그림15](https://user-images.githubusercontent.com/84370027/121769169-0fc7fa00-cb9d-11eb-8c92-88dc87c25fed.png)
 - 모티브가 된 '닥터 스톤'의 오리지널 사운드 트랙에서 사용
 - 게임 타이틀, 플레이, 클리어의 분위기와 맞는 음악을 선정
 
-## 타이틀 및 클리어 씬
+## 타이틀 및 클리어 씬🎞
 ![Title](https://user-images.githubusercontent.com/84370027/121769198-3ab24e00-cb9d-11eb-9729-1cc6a48e1e9a.jpg)
 - 타이틀 씬
 - 유저의 주 활동이 이루어지는 공간을 배경으로 석화된 사람의 모습이 메인으로 들어와 있다
 - 시작, 로드, 종료 버튼 구현
 - 사용된 폰트 : tower ruins 
 - Title.cs : 플레이 씬으로의 이동, 버튼 클릭시 이벤트 관리
-- SaveNLoad.cs : 플레이어 위치 값, 인벤토리, 세이브 폴더 값 관리
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
+public class Title : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject canvas;
+
+    [SerializeField]
+    private GameObject go_UI;
+
+    public string sceneName = "SampleScene";
+
+    public static Title instance;
+    private SaveNLoad theSaveNLoad; //로드 구현
+
+    private void Awake()
+    {      
+
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(this.gameObject);
+    }
+
+    public void ClickStart()
+    {
+        SceneManager.LoadScene(sceneName);
+        go_UI.SetActive(false);
+    }
+
+    public void ClickLoad()
+    {
+        Debug.Log("로드");
+        StartCoroutine(LoadCoroutine()); //대기
+
+    }
+
+    IEnumerator LoadCoroutine()
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName); //클래스에서 맵 전환
+        while(!operation.isDone) //로딩이 끝날 때까지
+        {
+            yield return null;
+        }
+
+        theSaveNLoad = FindObjectOfType<SaveNLoad>(); //다음 씬에 있는 곳에 있는 것을 찾아서
+        theSaveNLoad.LoadData(); //로드
+
+        go_UI.SetActive(false);
+
+        /*
+        Destroy(gameObject);
+        SceneManager.LoadScene(sceneName); //버그 방지
+        */
+    }
+    
+
+    public void ClickExit()
+    {
+        Debug.Log("종료");
+        Application.Quit(); //게임 종료
+    }
+}
+```
+- 시작 버튼을 누르면 다음 화면으로 씬 전환하고 활성화된 타이틀 UI는 비활성화
+- 로드 버튼을 누르면 앞서 저장된 위치를 받아와서 해당 위치로 로드하고 타이틀 UI는 비활성화
+- 종료 버튼을 누르면 게임 종료되도록 
+
+
+- SaveNLoad.cs : 플레이어 위치 값, 인벤토리, 세이브 폴더 값 관리
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.IO;
+
+[System.Serializable]
+public class SaveData
+{
+    public Vector3 playerPos; //플레이어 위치값 기억할 변수
+    public Vector3 playerRot;
+
+    public List<int> invenArrayNumber = new List<int>();
+    public List<string> invenItemName = new List<string>();
+    public List<int> invenItemNumber = new List<int>();
+}
+public class SaveNLoad : MonoBehaviour
+{
+    private SaveData saveData = new SaveData();
+
+    private string SAVE_DATA_DIRECTORY;
+    private string SAVE_FILENAME = "/SaveFile.txt";
+
+    private PlayerController thePlayer;
+    private Inventory theInven;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        SAVE_DATA_DIRECTORY = Application.dataPath + "/Saves/"; //게임폴더에 세이브 폴더 값 저장
+
+            if (!Directory.Exists(SAVE_DATA_DIRECTORY)) //경로 안에 세이브 디렉토리가 있다면
+                Directory.CreateDirectory(SAVE_DATA_DIRECTORY); //게임시작 폴더 안
+            
+    }
+
+    public void SaveData()
+    {
+        thePlayer = FindObjectOfType<PlayerController>();
+        theInven = FindObjectOfType<Inventory>();
+
+        Slot[] slots = theInven.GetSlots();
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if(slots[i] != null)//아이템이 있으면
+            {
+                saveData.invenArrayNumber.Add(i);
+                //saveData.invenItemName.Add(slots[i].item.itemName);
+                saveData.invenItemNumber.Add(slots[i].itemCount);
+            }
+        }
+
+        saveData.playerPos = thePlayer.transform.position; //위치 데이터를 기억
+        saveData.playerRot = thePlayer.transform.eulerAngles; //위치 데이터를 기억
+        string json = JsonUtility.ToJson(saveData); //위치 값을 제이슨화 시켜
+        File.WriteAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME, json); //물리적 파일로 넣음
+
+        Debug.Log("저장완료");
+        Debug.Log(json);
+    }
+
+    public void LoadData()
+    {
+        if(File.Exists(SAVE_DATA_DIRECTORY + SAVE_FILENAME)) //세이브 파일이 있으면
+        {
+            string LoadJson = File.ReadAllText(SAVE_DATA_DIRECTORY + SAVE_FILENAME);
+            saveData = JsonUtility.FromJson<SaveData>(LoadJson); //세이브 데이터로 풀어줌
+
+            thePlayer = FindObjectOfType<PlayerController>();
+            theInven = FindObjectOfType<Inventory>();
+
+            thePlayer.transform.position = saveData.playerPos; //위치 순간이동
+            thePlayer.transform.eulerAngles = saveData.playerRot; //회전값 일치
+
+            for (int i = 0; i < saveData.invenItemName.Count; i++)
+            {
+                theInven.LoadToInven(saveData.invenArrayNumber[i], saveData.invenItemName[i], saveData.invenItemNumber[i]);
+            }            
+
+            Debug.Log("로드 완료");
+        }
+
+        else
+        {
+            Debug.Log("세이브 파일 없음");
+        }
+
+    }
+}
+```
+- 플레이어의 위치값을 저장하고 인벤토리에 저장된 아이템도 기억하도록 변수 설정(PlayerController와 Inventory 이용)
+- 세이브하면 정보를 저장할 세이브 파일을 설정
+- json을 통해 위치 데이터를 실제 물리적 파일로 넣어 세이브와 로드를 수행할 수 있게 함
+- *json : 네트워크 서버와 클라이언트 사이에서 데이터를 주고 받을 때 사용, 게임 진행 상황 저장에 유용하게 쓰임
+- 플레이 화면으로 넘어가면 본 UI는 비활성화 되도록 구현(중요)
 
 ![Clear](https://user-images.githubusercontent.com/84370027/121769200-3be37b00-cb9d-11eb-9abd-2ac07195193b.jpg)
 - 클리어 씬
