@@ -984,7 +984,7 @@ public class GunController : MonoBehaviour
 - X를 누르면 사운드가 플레이 되도록 설정
 
 - Hud.cs
-```
+```C#
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -1232,7 +1232,7 @@ public class ActionController : MonoBehaviour
 - 습득한 아이템은 I키를 눌러 인벤토리에서 확인 가능
 - 마우스를 아이템에 갖다대면 아이템 설명팁이 뜨고, 오른쪽 마우스 버튼을 눌러 이용 가능
 - Inventory.cs : 인벤토리 창 열고 닫기, 아이템 종류 구분, 습득 아이템 저장 등
-```
+```C#
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -1352,7 +1352,7 @@ public class Inventory : MonoBehaviour
 - 돼지를 근접 무기로 두 번 때리면 사망 애니메이션 진행 후 Destroy
 - 돼지 소리 구현(일반 울음소리, 때리면 나는 소리, 죽으면 나는 소리)
 - Pig.cs : 이중상속, 일반 상태일 때 애니메이션 재생 관리
-```
+```C#
 public class Pig : WeekAnimal //이중 상속
 {
 
@@ -1407,7 +1407,7 @@ public class Pig : WeekAnimal //이중 상속
 - 돼지가 맞거나 죽지 않았을 때 랜덤으로 행동하고, 사운드를 낼 수 있도록 구현  
 - WeekAnimal.cs 시야각에 따라 플레이어 반대방향으로 뛸 수 있도록 구현, 데미지를 입어 도망가는 것 구현
 - Animal.cs : 동물 전체 관리, 이름, 속도, 드랍 아이템, 사운드, 네비게이션 등 담당
-```
+```C#
 public class WeekAnimal : Animal //상속
 {
     public void Run(Vector3 _targetPos) //플레이어 반대방향으로 뛰도록
@@ -1602,7 +1602,7 @@ public class DayAndNight : MonoBehaviour
 - 마우스 왼쪽 클릭으로 설치
 - 설치불가 지역은 빨간색으로 표시
 - CraftManual.cs : 이름, 프리팹, 미리보기 프리팹 관리
-```
+```C#
 [System.Serializable]
 public class Craft
 {
@@ -1786,7 +1786,7 @@ public class Guide : MonoBehaviour
 ![ddd](https://user-images.githubusercontent.com/84370027/121770145-8b787580-cba2-11eb-890d-d4b638fb9885.JPG)
 - 플레이 중 P를 누르면 일시정지 메뉴를 언제든지 활성화하고 끌 수 있음
 - Pause.cs : 창 활성화 여부 판단, 창 열고 닫기 관리
-```
+```C#
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField]
@@ -1855,7 +1855,7 @@ public class PauseMenu : MonoBehaviour
 - 시작, 로드, 종료 버튼 구현
 - 사용된 폰트 : tower ruins 
 - Title.cs : 플레이 씬으로의 이동, 버튼 클릭시 이벤트 관리
-```
+```C#
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -1932,7 +1932,7 @@ public class Title : MonoBehaviour
 
 
 - SaveNLoad.cs : 플레이어 위치 값, 인벤토리, 세이브 폴더 값 관리
-```
+```C#
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
