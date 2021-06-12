@@ -30,10 +30,17 @@ public class GunController : MonoBehaviour
     [SerializeField]
     private LayerMask layerMask;
 
+    [SerializeField]
+    private GameObject bullet;
+    public float bulletspeed = 10.0f;
+
+    private Rigidbody rigidbody;
+
 
 
     void Start()
     {
+        rigidbody = GetComponent<Rigidbody>();
         originPos = Vector3.zero;
         audioSource = GetComponent<AudioSource>();
         //originPos = transform.localPosition;
@@ -266,6 +273,7 @@ public class GunController : MonoBehaviour
     {
         return currentGun;
     }
+
 
     public void GunChange(Gun _gun)
     {

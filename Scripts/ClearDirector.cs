@@ -12,7 +12,8 @@ public class ClearDirector : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            SceneManager.LoadScene("GameTitle");
+                Debug.Log("종료");
+                Application.Quit(); //게임 종료
         }
     }
 }

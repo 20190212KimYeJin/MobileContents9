@@ -49,7 +49,9 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody myRigid;
 
-    private GameBehavior gameManager;
+    //private GameBehavior gameManager;
+
+    private Animator anim;
 
 
     // Use this for initialization
@@ -59,7 +61,7 @@ public class PlayerController : MonoBehaviour
         myRigid = GetComponent<Rigidbody>();
         applySpeed = walkSpeed;
         theStatusController = FindObjectOfType<StatusController>();
-        gameManager = GameObject.Find("GameManagers").GetComponent<GameBehavior>();
+        //gameManager = GameObject.Find("GameManagers").GetComponent<GameBehavior>();
     }
 
 
@@ -209,7 +211,7 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.gameObject.name == "spider")
         {
-            gameManager.HP -= 1;
+            //gameManager.HP -= 1;
             Debug.Log("충돌");
         }
     }
