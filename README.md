@@ -12,11 +12,31 @@
 - **스토리 위주의 신박한 게임을 좋아하는 사람들을 주요 타깃으로 함**
 - (+) 기존의 FPS 게임에서 지루함을 느낀 게임 마니아층. 신선한 주제로 처음 게임을 접하는 사람들도 재미있게 즐길 수 있게 함.
 
-# 기획 내용
-# 스토리🎮
+# 스토리 모티브🎮
+![L_1252094](https://user-images.githubusercontent.com/84370027/121769429-739ef280-cb9e-11eb-8f05-3b97a2095f46.jpg)
+- 스토리 모티브 : Dr.Stone
+- 일본 연재 만화
+
+# 게임 스토리(시나리오)🎮
 ![12](https://user-images.githubusercontent.com/84370027/120946357-27efe180-c777-11eb-8921-33fdca5acad5.JPG)
 **(석화된 인간 : 인간 Asset에 Material을 입혀 구현)**  
 여느 날과 다르지 않던 지구의 운명을 바꿀 초록빛이 우주에서 떨어졌다. 그 초록빛으로 인해 인간들은 모두 석화되고 만다. 인간이 모두 석화되자 지구의 모든 건물들은 부식되고, 숲이 울창해지면서 점점 동물들의 터전으로 변하게 된다. 약 1000년 뒤, 동물의 왕국이 된 현재, 1000년 전에 석화되었던 당신이 깨어나게 된다. 몸을 감싸고 있던 암석을 뚫고 나와 눈을 뜨게 된 당신은 1000년 사이에 지구가 변한 것을 깨닫게 된다. 단, 유일하게 인간의 흔적이 남아있는 스톤월드에서 당신은 혼자서 지구의 문명을 다시 불러일으키려고 한다. 그러기 위해서는 집을 짓고, 고기를 먹고, 주변의 천적들과도 싸우면서 하루하루를 살아가야 한다. 그리고 당신은 문명을 일으키기 위해 텅 빈 도시 속에 석화된 인간들을 풀어낼 방법을 궁리한다.  과연 당신은 석화된 인간들을 해방시키고, 1000년 전의 문명을 다시 이룩할 수 있을까?
+
+# 순서도📃
+![그림16](https://user-images.githubusercontent.com/84370027/121769346-0f7c2e80-cb9e-11eb-898d-c653999eea63.png)
+
+# 코드 별 순서도
+**레퍼런스 강의와 기타 수업 자료 등을 응용하여 구현한 코드 위주**
+![그림17](https://user-images.githubusercontent.com/84370027/121769699-1f950d80-cba0-11eb-952b-7c834844ab1b.png)
+![그림18](https://user-images.githubusercontent.com/84370027/121769701-202da400-cba0-11eb-9373-f75096a02462.png)
+![그림19](https://user-images.githubusercontent.com/84370027/121769702-20c63a80-cba0-11eb-892c-e12a4df69cd9.png)
+![그림20](https://user-images.githubusercontent.com/84370027/121769704-20c63a80-cba0-11eb-9099-4c30c6ea185f.png)
+![그림21](https://user-images.githubusercontent.com/84370027/121769705-215ed100-cba0-11eb-9a78-c4372e3b9869.png)
+![그림22](https://user-images.githubusercontent.com/84370027/121769707-215ed100-cba0-11eb-91d7-d7290bc25527.png)
+![그림23](https://user-images.githubusercontent.com/84370027/121769709-21f76780-cba0-11eb-8c88-55e74fa18be1.png)
+
+# 스크립트🔗
+https://github.com/20190212KimYeJin/MobileContents9/tree/master/Scripts
 
 # 제작 과정🎮
 ![11](https://user-images.githubusercontent.com/84370027/120946073-2bcf3400-c776-11eb-8717-665177c136e6.JPG)
@@ -110,6 +130,9 @@
 - 물약을 사용해서 석화를 풀었음을 의미하는 장면으로 구성
 - UI - Video Player 기능을 통해 비디오로 보여주도록 함
 - 게임 클리어 이후 X창을 눌러 게임을 나가게 함
+
+## 유니티 프로젝트
+![캡처](https://user-images.githubusercontent.com/84370027/121769498-dabca700-cb9e-11eb-9a75-925c63bf4e4a.JPG)
 
 ## 참고 레퍼런스
 https://keidy.tistory.com/254
