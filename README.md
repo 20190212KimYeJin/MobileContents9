@@ -16,7 +16,7 @@
 # 스토리 모티브🎮
 ![L_1252094](https://user-images.githubusercontent.com/84370027/121769429-739ef280-cb9e-11eb-8f05-3b97a2095f46.jpg)
 - 스토리 모티브 : Dr.Stone
-- 일본 연재 만화()
+- 일본 연재 만화(애니메이션)
 
 # 게임 스토리(시나리오)🎮
 ![12](https://user-images.githubusercontent.com/84370027/120946357-27efe180-c777-11eb-8921-33fdca5acad5.JPG)
@@ -59,8 +59,7 @@ https://github.com/20190212KimYeJin/MobileContents9/tree/master/Scripts
 - 1인칭이므로 Player안에 Main Camera를 넣고 플레이어 시점에서 클리어 할 수 있도록 구현  
 - 게임 플레이 중에는 Player가 자신의 모습을 활용할 수 없어 Capsule로만 몸체 구현  
 - **PlayerController.cs : 움직임 및 시야 조정 등**
-
-```C#
+```c#
 public class PlayerController : MonoBehaviour
 {
     static public bool isActivated = true;
@@ -275,7 +274,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-}
+}  
 ```
 - 할당된 키를 누르면 움직임, 달리기, 점프를 할 수 있으며, 마우스 회전으로 카메라 회전을 할 수 있는 역할을 주로 한다.  
 
@@ -1915,9 +1914,77 @@ public class CraftManual : MonoBehaviour
 - 인벤토리에 들어있는 석화 부활액을 3개 연달아 사용하면 클리어
 - = 왼쪽 아래 게이지 중 녹색의 석화 게이지를 다 채우면 클리어
 - 석화 게이지는 게임 시작과 동시에 줄어들며 이를 다시 채우는 것을 목적으로 함
-- 석화 부활액 사용 시 효과음이 들리도록 설정
+- 석화 부활액 사용 시 효과음이 들리도록 설정  
 - RealRock.cs : 바위 체력, 파편 관리, 이펙트, **드랍 아이템 관리**
+```c#
+public class RealRock : MonoBehaviour
+{
+    // 게임 오브젝트
+    [SerializeField]
+    private int hp; //바위 체력
+
+    [SerializeField]
+    private float destroyTime; //파편 삭제 시간
+
+    [SerializeField]
+    private SphereCollider col; // 콜라이더 비활성화용
+
+    [SerializeField]
+    private GameObject go_rock; //바위
+
+    [SerializeField]
+    private GameObject go_debris; //깨진 바위
+
+    [SerializeField]
+    private GameObject go_effect_prefab; //바위 이펙트
+
+    [SerializeField]
+    private GameObject go_rock_item; //깨지면 나오는 아이템
+
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip effect_sound;
+
+    [SerializeField]
+    private AudioClip effect_sound2;
+
+    public void Mining()
+    {
+        audioSource.clip = effect_sound;
+        audioSource.Play();
+
+        var clone = Instantiate(go_effect_prefab, col.bounds.center, Quaternion.identity);
+        //바위 이펙트가, 콜라이더 정가운데에서, 회전값은 기본으로
+        Destroy(clone, destroyTime);
+
+        hp--;
+
+        if (hp <= 0)
+            Destruction();
+    }
+
+    private void Destruction()
+    {
+        audioSource.clip = effect_sound2;
+        audioSource.Play();
+
+        col.enabled = false; // 콜라이더 삭제
+        Instantiate(go_rock_item, go_rock.transform.position, Quaternion.identity);
+        Destroy(go_rock); // 일반 바위 삭제
+
+        go_debris.SetActive(true); // 깨진 바위 활성화 및 중력으로 인한 파편 튀김
+        Destroy(go_debris, destroyTime);
+    }
+}
+```
+- 바위 체력, 파편 삭제, 콜라이더 관리, 내려칠 때 사운드, 깨지면서 나올 아이템을 관리하는 go_item_Rock 관리
+- 위의 내용은 Inspector 창에서 조절할 수 있음
+- 깨진 바위 파편과 아이템이 나오는 위치는 Instantiate를 이용해 바위의 중앙에서 이루어지도록 하였음
+
 - Rock.cs : **일반 바위** 바위 체력, 파편 관리, 이펙트
+- RealRock.cs와 같으나 깨지면 나오는 아이템을 넣을 go_item_Rock 부분이 사라짐
 
 ## 도움말
 ![그림12](https://user-images.githubusercontent.com/84370027/121769130-d7282080-cb9c-11eb-8588-89e4815288e9.png)
