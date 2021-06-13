@@ -28,7 +28,7 @@
 - Unity Asset Store에서 다운로드
 
 # 순서도📃
-![그림16](https://user-images.githubusercontent.com/84370027/121769346-0f7c2e80-cb9e-11eb-898d-c653999eea63.png)
+![그림1](https://user-images.githubusercontent.com/84370027/121795860-8e7d6f80-cc4f-11eb-96c1-c8b86f29bb56.png)
 
 # 코드 별 순서도
 **레퍼런스 강의와 기타 수업 자료 등을 응용하여 구현한 코드 위주**
@@ -1406,7 +1406,6 @@ public class Pig : WeekAnimal //이중 상속
 ```
 - 돼지가 맞거나 죽지 않았을 때 랜덤으로 행동하고, 사운드를 낼 수 있도록 구현  
 - WeekAnimal.cs 시야각에 따라 플레이어 반대방향으로 뛸 수 있도록 구현, 데미지를 입어 도망가는 것 구현
-- Animal.cs : 동물 전체 관리, 이름, 속도, 드랍 아이템, 사운드, 네비게이션 등 담당
 ```C#
 public class WeekAnimal : Animal //상속
 {
@@ -1432,7 +1431,191 @@ public class WeekAnimal : Animal //상속
 ```
 - 돼지가 곡괭이에 맞으면 걷던 것을 false시키고 뛰는 것을 true시킴(애니메이션도 뛰는 애니메이션으로 구현)
 - Vector3를 통해 돼지가 달릴 방향이 플레이어의 반대 방향이 되도록 설정
-- 죽은 상태가 아니라면 계속 달림
+- 죽은 상태가 아니라면 계속 달림  
+
+- Animal.cs : 동물 전체 관리, 이름, 속도, 드랍 아이템, 사운드, 네비게이션 등 담당
+```c#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI; //네비게이션 AI용
+
+public class Animal : MonoBehaviour
+{
+    [SerializeField]
+    private protected string animalName;
+
+    [SerializeField]
+    protected int hp;
+
+    [SerializeField]
+    protected float walkSpeed;
+
+    [SerializeField]
+    protected float runSpeed;
+    //protected float applySpeed;
+
+    //[SerializeField]
+    //protected float turningSpeed; //회전속도
+
+    protected Vector3 destination; //돼지 방향
+
+    protected bool isAction; //행동 여부 판별
+    protected bool isWalking; //걸음 여부 판별
+    protected bool isRunning; //뜀 판별
+    protected bool isDead; //죽음 판별
+
+    [SerializeField]
+    protected float walkTime;//걷는 시간
+
+    [SerializeField]
+    protected float waitTime; //대기 시간
+
+    [SerializeField]
+    protected float runTime; //뛰는 시간
+
+    protected float currentTime; //대기 시간
+
+    [SerializeField]
+    private float destroyTime; //삭제 시간
+
+    [SerializeField]
+    protected GameObject go_pig; //돼지
+
+    [SerializeField]
+    protected GameObject meat_item; //죽이면 나오는 아이템
+
+    //필요 컴포넌트
+    [SerializeField]
+    protected Animator anim;
+    [SerializeField]
+    protected Rigidbody rigid;
+    [SerializeField]
+    protected BoxCollider boxCol;
+    protected AudioSource theAudio; //pan level custom에서 3d 사운드 조절
+    protected NavMeshAgent nav; //네비게이션
+
+    [SerializeField]
+    protected AudioClip[] sound_normal;
+
+    [SerializeField]
+    protected AudioClip sound_hurt;
+
+    [SerializeField]
+    protected AudioClip sound_dead;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        nav = GetComponent<NavMeshAgent>();
+        theAudio = GetComponent<AudioSource>();
+        currentTime = waitTime;
+        isAction = true; //행동중
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!isDead)
+        {
+            Move();
+            ElapseTime(); //시간경과함수 
+        }
+
+    }
+
+    protected void Move()
+    {
+        if (isWalking || isRunning)
+            //rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime)); //1초에 walkspeed만큼 나아감
+            nav.SetDestination(transform.position + destination * 5f); //네비 자체에 방향을 설정함, 5배 정도 더 멀리 도망가도록
+    }
+
+    protected void ElapseTime()
+    {
+        if (isAction)
+        {
+            currentTime -= Time.deltaTime; //1초마다 깎음
+            if (currentTime <= 0)
+            {
+                ReSet(); //다음 행동 개시
+            }
+        }
+    }
+
+   protected virtual void ReSet() // virtual 사용으로 기능 완성을 pig에서 해도 됨
+    {
+        isWalking = false; //무한 걷기 막음
+        isRunning = false;
+        isAction = true;
+        nav.speed = walkSpeed;
+        nav.ResetPath(); //목적지를 없애 경사 있는 언덕 사이로 들어가지 못하게 함
+        destination.Set(Random.Range(-0.2f, 0.2f), 0f, Random.Range(0.5f, 1f));
+
+        anim.SetBool("Walking", isWalking);
+        anim.SetBool("Running", isRunning);
+        //리셋할 때 뛰든 걷든 다 취소되게 만듦
+    }
+
+
+
+    protected void TryWalk()
+    {
+        isWalking = true;
+        anim.SetBool("Walking", isWalking);
+        currentTime = walkTime;
+        nav.speed = walkSpeed;
+        //Debug.Log("걷기");
+    }
+
+
+
+    public virtual void Damage(int _dmg, Vector3 _targetPos) //데미지 맞으면 런 호출하도록
+    {
+        if (!isDead)
+        {
+            hp -= _dmg;
+
+            if (hp <= 0)
+            {
+                Dead();
+                return;
+            }
+
+            PlaySE(sound_hurt);
+            anim.SetTrigger("Hurt");
+        }
+    }
+
+    protected void Dead()
+    {
+        PlaySE(sound_dead);
+        isWalking = false;
+        isRunning = false;
+        isDead = true;
+        anim.SetTrigger("Dead");        
+        Destroy(this.gameObject, destroyTime); // 죽으면 삭제
+        Instantiate(meat_item, go_pig.transform.position, Quaternion.identity);
+    }
+
+    protected void RandomSound()
+    {
+        int _random = Random.Range(0, 3); //일상 사운드
+        PlaySE(sound_normal[_random]);
+    }
+
+    protected void PlaySE(AudioClip _clip)
+    {
+        theAudio.clip = _clip;
+        theAudio.Play();
+    }
+}
+```
+- 모든 동물을 관리할 수 있는 animal.cs
+- 동물의 이름, 체력, 걷는 속도, 뛰는 속도를 Inspector 창에서 조절할 수 있다.
+- 행동, 걸음, 뜀, 죽음 등을 판별하고 그에 맞는 사운드와 죽이면 나오는 아이템도 조절할 수 있도록 구현
+- 행동에 따른 활성화 여부를 판단하고 각 행동에 맞는 다른 행동들도 활성화 비활성화를 조절하여 자연스러운 행동이 나올 수 있도록 구현
+- ReSet()과 Damage()에는 virtual을 통해 해당 스크립트를 이중상속 받은 동물의 스크립트에서 다른 기능을 같이 구현할 수 있도록 
 
 ## 플레이어를 따라오는 적🕷
 ![그림11](https://user-images.githubusercontent.com/84370027/121768954-f2466080-cb9b-11eb-98cd-d8c515caec29.png)
@@ -1533,7 +1716,7 @@ public class SpiderMove : MonoBehaviour
 - 순회하다가 거미의 Collider에 Player의 Collider가 충돌하면 Player를 목적지로 하여 돌진하는 것처럼 구현
 
 
-## 🌊
+## 물🌊
 ![wa](https://user-images.githubusercontent.com/84370027/121770477-713f9700-cba4-11eb-95fc-00fba88c2c26.JPG)
 - 움푹 파인 지형을 만들어 물 구현  
 ![ea](https://user-images.githubusercontent.com/84370027/121770479-7270c400-cba4-11eb-9104-6b4230fea47e.JPG)
