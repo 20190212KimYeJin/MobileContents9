@@ -1543,7 +1543,7 @@ public class SpiderMove : MonoBehaviour
 ![그림8](https://user-images.githubusercontent.com/84370027/121768985-186c0080-cb9c-11eb-8033-8926b8a04ef2.png)
 ![그림9](https://user-images.githubusercontent.com/84370027/121768986-19049700-cb9c-11eb-9479-c1f8977bb705.png)
 ![그림10](https://user-images.githubusercontent.com/84370027/121768987-19049700-cb9c-11eb-8d32-3a1acebd37ba.png)
-- 시간이 흐를수록 해가 떨어지며 낮과 밤이 반복되는 것을 확인할 수 
+- 시간이 흐를수록 해가 떨어지며 낮과 밤이 반복되는 것을 확인할 수 있다.
 - 기준 시간 : 10초
 - DayAndNight.cs : 게임세계 속 시간 구분, 낮과 밤의 Fog 관리 및 계산
 ```c#
