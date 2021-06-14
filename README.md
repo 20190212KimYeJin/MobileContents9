@@ -37,8 +37,9 @@
 ![그림19](https://user-images.githubusercontent.com/84370027/121769702-20c63a80-cba0-11eb-892c-e12a4df69cd9.png)
 ![그림20](https://user-images.githubusercontent.com/84370027/121769704-20c63a80-cba0-11eb-9099-4c30c6ea185f.png)
 ![그림21](https://user-images.githubusercontent.com/84370027/121769705-215ed100-cba0-11eb-9a78-c4372e3b9869.png)
-![그림22](https://user-images.githubusercontent.com/84370027/121769707-215ed100-cba0-11eb-91d7-d7290bc25527.png)
-![그림23](https://user-images.githubusercontent.com/84370027/121769709-21f76780-cba0-11eb-8c88-55e74fa18be1.png)
+![1](https://user-images.githubusercontent.com/84370027/121830183-6cdbc100-ccff-11eb-8a5c-d54103de5868.PNG)
+![2](https://user-images.githubusercontent.com/84370027/121830188-6ea58480-ccff-11eb-85cc-62c04eecd633.PNG)
+
 
 # 스크립트🔗
 https://github.com/20190212KimYeJin/MobileContents9/tree/master/Scripts
